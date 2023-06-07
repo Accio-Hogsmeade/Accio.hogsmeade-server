@@ -4,6 +4,7 @@ import accio.hogsmeade.store.client.member.Member;
 import accio.hogsmeade.store.client.member.repository.MemberRepository;
 import accio.hogsmeade.store.client.member.service.dto.SignupMemberDto;
 import accio.hogsmeade.store.common.Address;
+import accio.hogsmeade.store.common.exception.AuthorityException;
 import accio.hogsmeade.store.common.exception.DuplicateException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
