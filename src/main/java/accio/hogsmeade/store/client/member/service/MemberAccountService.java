@@ -4,7 +4,7 @@ import accio.hogsmeade.store.jwt.TokenInfo;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
-public interface AccountService {
+public interface MemberAccountService {
 
     TokenInfo login(String loginId, String loginPw);
 }
