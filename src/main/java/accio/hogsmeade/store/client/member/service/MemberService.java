@@ -7,4 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface MemberService {
 
     Long signup(SignupMemberDto dto);
+
+    Long withdrawal(String loginId, String loginPw);
 }

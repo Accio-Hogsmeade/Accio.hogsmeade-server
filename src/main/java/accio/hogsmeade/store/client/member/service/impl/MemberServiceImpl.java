@@ -37,4 +37,9 @@ public class MemberServiceImpl implements MemberService {
         Member savedMember = memberRepository.save(member);
         return savedMember.getId();
     }
+
+    @Override
+    public Long withdrawal(String loginId, String loginPw) {
+        return null;
+    }
 }
