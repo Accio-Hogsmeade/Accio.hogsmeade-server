@@ -3,6 +3,7 @@ package accio.hogsmeade.store.client.member;
 import accio.hogsmeade.store.common.Active;
 import accio.hogsmeade.store.common.Address;
 import accio.hogsmeade.store.common.TimeBaseEntity;
+import accio.hogsmeade.store.common.exception.AuthorityException;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -91,6 +92,14 @@ public class Member extends TimeBaseEntity implements UserDetails {
                 .active(ACTIVE)
                 .roles(Collections.singletonList("MEMBER"))
                 .build();
+    }
+
+    //== 비즈니스 로직 ==//
+    public void withdrawal(String loginPw) {
+        if (!this.loginPw.equals(loginPw)) {
+            throw new AuthorityException();
+        }
+        this.active = DEACTIVE;
     }
 
     //== 시큐리티 설정 ==//

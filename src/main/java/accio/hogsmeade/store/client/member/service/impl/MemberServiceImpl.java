@@ -8,6 +8,7 @@ import accio.hogsmeade.store.common.exception.DuplicateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -36,5 +37,15 @@ public class MemberServiceImpl implements MemberService {
         Member member = Member.createMember(dto.getLoginId(), dto.getLoginPw(), dto.getName(), dto.getTel(), dto.getEmail(), dto.getZipcode(), dto.getMainAddress(), dto.getDetailAddress(), dto.getIdentity(), dto.getSchoolGroup());
         Member savedMember = memberRepository.save(member);
         return savedMember.getId();
+    }
+
+    @Override
+    public Long withdrawal(String loginId, String loginPw) {
+        Member findMember = memberRepository.findByLoginId(loginId)
+                .orElseThrow(NoSuchElementException::new);
+
+        findMember.withdrawal(loginPw);
+
+        return findMember.getId();
     }
 }
