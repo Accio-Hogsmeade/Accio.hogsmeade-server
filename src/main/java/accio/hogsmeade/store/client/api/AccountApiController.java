@@ -1,9 +1,12 @@
 package accio.hogsmeade.store.client.api;
 
+import accio.hogsmeade.store.client.api.request.member.LoginMemberRequest;
 import accio.hogsmeade.store.client.api.request.member.SignupMemberRequest;
 import accio.hogsmeade.store.client.api.request.member.WithdrawalMemberRequest;
+import accio.hogsmeade.store.client.member.service.MemberAccountService;
 import accio.hogsmeade.store.client.member.service.MemberService;
 import accio.hogsmeade.store.client.member.service.dto.SignupMemberDto;
+import accio.hogsmeade.store.jwt.TokenInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,7 @@ import javax.validation.Valid;
 public class AccountApiController {
 
     private final MemberService memberService;
+    private final MemberAccountService memberAccountService;
 
     @ApiOperation(value = "회원가입")
     @PostMapping("/signup")
@@ -53,5 +57,15 @@ public class AccountApiController {
 
         log.info("withdrawal member={}", memberId);
         return memberId;
+    }
+
+    @ApiOperation(value = "로그인")
+    @PostMapping("/login")
+    public TokenInfo login(@Valid @RequestBody LoginMemberRequest request) {
+        log.debug("LoginMemberRequest={}", request);
+        TokenInfo tokenInfo = memberAccountService.login(request.getLoginId(), request.getLoginPw());
+
+        log.debug("tokenInfo={}", tokenInfo);
+        return tokenInfo;
     }
 }
