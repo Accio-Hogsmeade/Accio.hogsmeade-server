@@ -11,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static accio.hogsmeade.store.client.member.Identity.STUDENT;
 import static accio.hogsmeade.store.client.member.SchoolGroup.GRYFFINDOR;
 import static accio.hogsmeade.store.common.Active.ACTIVE;
+import static accio.hogsmeade.store.common.Active.DEACTIVE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -99,6 +101,50 @@ class MemberServiceTest {
         //then
         Optional<Member> findMember = memberRepository.findById(memberId);
         assertThat(findMember).isPresent();
+    }
+
+    @Test
+    @DisplayName("회원탈퇴#비밀번호 불일치")
+    void notEqualLoginPw() {
+        //given
+        Member targetMember = insertMember();
+
+        //when
+        String loginPw = targetMember.getLoginPw() + "@";
+
+        //then
+        assertThatThrownBy(() -> memberService.withdrawal(targetMember.getLoginId(), loginPw))
+                .isInstanceOf(AuthorityException.class);
+    }
+
+    @Test
+    @DisplayName("회원탈퇴#존재하지 않는 회원")
+    void notExistMember() {
+        //given
+
+        //when
+        String loginId = "abcde";
+        String loginPw = "abc1234!";
+
+        //then
+        assertThatThrownBy(() -> memberService.withdrawal(loginId, loginPw))
+                .isInstanceOf(NoSuchElementException.class);
+
+    }
+
+    @Test
+    @DisplayName("회원탈퇴")
+    void withdrawal() {
+        //given
+        Member targetMember = insertMember();
+
+        //when
+        Long memberId = memberService.withdrawal(targetMember.getLoginId(), targetMember.getLoginPw());
+
+        //then
+        Optional<Member> findMember = memberRepository.findById(memberId);
+        assertThat(findMember).isPresent();
+        assertThat(findMember.get().getActive()).isEqualTo(DEACTIVE);
     }
 
     private Member insertMember() {
