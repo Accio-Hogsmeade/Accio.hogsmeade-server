@@ -8,8 +8,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
 
 import static accio.hogsmeade.store.client.member.Identity.STUDENT;
 import static accio.hogsmeade.store.client.member.SchoolGroup.GRYFFINDOR;
@@ -37,7 +39,7 @@ class AccountServiceTest {
 
         //then
         assertThatThrownBy(() -> memberAccountService.login(loginId, loginPw))
-                .isInstanceOf(UsernameNotFoundException.class);
+                .isInstanceOf(BadCredentialsException.class);
     }
 
     @Test
@@ -51,7 +53,7 @@ class AccountServiceTest {
 
         //then
         assertThatThrownBy(() -> memberAccountService.login(member.getLoginId(), loginPw))
-                .isInstanceOf(UsernameNotFoundException.class);
+                .isInstanceOf(BadCredentialsException.class);
     }
 
     @Test
@@ -82,6 +84,7 @@ class AccountServiceTest {
                 .identity(STUDENT)
                 .schoolGroup(GRYFFINDOR)
                 .active(ACTIVE)
+                .roles(Collections.singletonList("MEMBER"))
                 .build();
         return memberRepository.save(member);
     }
