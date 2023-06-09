@@ -59,6 +59,20 @@ public class Store extends TimeBaseEntity implements UserDetails {
         this.roles = roles;
     }
 
+    public static Store createStore(String loginId, String loginPw, String shopkeeper, String tel, String email, String storeName, String storeInfo) {
+        return Store.builder()
+                .loginId(loginId)
+                .loginPw(loginPw)
+                .shopkeeper(shopkeeper)
+                .tel(tel)
+                .email(email)
+                .storeName(storeName)
+                .storeInfo(storeInfo)
+                .active(ACTIVE)
+                .roles(Collections.singletonList("STORE"))
+                .build();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
