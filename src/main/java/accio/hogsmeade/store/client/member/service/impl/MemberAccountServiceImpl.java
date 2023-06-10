@@ -29,4 +29,9 @@ public class MemberAccountServiceImpl implements MemberAccountService {
         //인증 정보를 기반으로 JWT 토큰 생성
         return jwtTokenProvider.generateToken(authentication);
     }
+
+    @Override
+    public String forgotLoginId(String email) {
+        return null;
+    }
 }
