@@ -1,5 +1,6 @@
 package accio.hogsmeade.store.client.member.service.impl;
 
+import accio.hogsmeade.store.client.member.repository.MemberRepository;
 import accio.hogsmeade.store.client.member.service.MemberAccountService;
 import accio.hogsmeade.store.jwt.JwtTokenProvider;
 import accio.hogsmeade.store.jwt.TokenInfo;
@@ -9,12 +10,15 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
+
 @Service
 @RequiredArgsConstructor
 public class MemberAccountServiceImpl implements MemberAccountService {
 
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final MemberRepository memberRepository;
 
     @Override
     public TokenInfo login(String loginId, String loginPw) {
@@ -32,6 +36,8 @@ public class MemberAccountServiceImpl implements MemberAccountService {
 
     @Override
     public String forgotLoginId(String email) {
-        return null;
+        String loginId = memberRepository.findLoginIdByEmail(email)
+                .orElseThrow(NoSuchElementException::new);
+        return loginId;
     }
 }
