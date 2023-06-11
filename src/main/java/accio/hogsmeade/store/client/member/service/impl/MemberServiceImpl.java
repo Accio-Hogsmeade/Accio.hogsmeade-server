@@ -3,6 +3,7 @@ package accio.hogsmeade.store.client.member.service.impl;
 import accio.hogsmeade.store.client.member.Member;
 import accio.hogsmeade.store.client.member.repository.MemberRepository;
 import accio.hogsmeade.store.client.member.service.MemberService;
+import accio.hogsmeade.store.client.member.service.dto.EditLoginPwDto;
 import accio.hogsmeade.store.client.member.service.dto.SignupMemberDto;
 import accio.hogsmeade.store.common.exception.DuplicateException;
 import lombok.RequiredArgsConstructor;
@@ -47,5 +48,10 @@ public class MemberServiceImpl implements MemberService {
         findMember.withdrawal(loginPw);
 
         return findMember.getId();
+    }
+
+    @Override
+    public Long editLoginPw(String loginId, EditLoginPwDto dto) {
+        return null;
     }
 }
