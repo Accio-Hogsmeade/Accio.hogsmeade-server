@@ -1,5 +1,6 @@
 package accio.hogsmeade.store.client.api;
 
+import accio.hogsmeade.store.client.api.request.member.ForgotLoginIdRequest;
 import accio.hogsmeade.store.client.api.request.member.LoginMemberRequest;
 import accio.hogsmeade.store.client.api.request.member.SignupMemberRequest;
 import accio.hogsmeade.store.client.api.request.member.WithdrawalMemberRequest;
@@ -67,5 +68,15 @@ public class AccountApiController {
 
         log.debug("tokenInfo={}", tokenInfo);
         return tokenInfo;
+    }
+
+    @ApiOperation(value = "아이디 찾기")
+    @PostMapping("/forgot/loginId")
+    public String forgotLoginId(@Valid @RequestBody ForgotLoginIdRequest request) {
+        log.debug("ForgotLoginIdRequest={}", request);
+        String loginId = memberAccountService.forgotLoginId(request.getEmail());
+
+        log.debug("forgotLoginId={}", loginId);
+        return loginId;
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.NoSuchElementException;
 
 import static accio.hogsmeade.store.client.member.Identity.STUDENT;
 import static accio.hogsmeade.store.client.member.SchoolGroup.GRYFFINDOR;
@@ -21,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
-class AccountServiceTest {
+class MemberAccountServiceTest {
 
     @Autowired
     private MemberAccountService memberAccountService;
@@ -67,6 +68,33 @@ class AccountServiceTest {
 
         //then
         assertThat(tokenInfo).isNotNull();
+    }
+
+    @Test
+    @DisplayName("아이디 찾기#존재하지 않는 계정")
+    void notExistAccountByLoginId() {
+        //given
+        String email = "empty@naver.com";
+
+        //when
+
+        //then
+        assertThatThrownBy(() -> memberAccountService.forgotLoginId(email))
+                .isInstanceOf(NoSuchElementException.class);
+
+    }
+
+    @Test
+    @DisplayName("아이디 찾기")
+    void forgotLoginId() {
+        //given
+        Member member = insertMember();
+
+        //when
+        String loginId = memberAccountService.forgotLoginId(member.getEmail());
+
+        //then
+        assertThat(loginId).isEqualTo(member.getLoginId());
     }
 
     private Member insertMember() {
