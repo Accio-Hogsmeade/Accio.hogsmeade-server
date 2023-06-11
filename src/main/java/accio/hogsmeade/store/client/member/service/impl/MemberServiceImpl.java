@@ -52,6 +52,11 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Long editLoginPw(String loginId, EditLoginPwDto dto) {
-        return null;
+        Member findMember = memberRepository.findByLoginId(loginId)
+                .orElseThrow(NoSuchElementException::new);
+
+        findMember.editLoginPw(dto.getNowLoginPw(), dto.getNewLoginPw());
+
+        return findMember.getId();
     }
 }
