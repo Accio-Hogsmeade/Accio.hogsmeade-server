@@ -4,6 +4,7 @@ import accio.hogsmeade.store.common.Active;
 import accio.hogsmeade.store.common.Address;
 import accio.hogsmeade.store.common.TimeBaseEntity;
 import accio.hogsmeade.store.common.exception.AuthorityException;
+import accio.hogsmeade.store.common.exception.EditException;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -100,6 +101,13 @@ public class Member extends TimeBaseEntity implements UserDetails {
             throw new AuthorityException();
         }
         this.active = DEACTIVE;
+    }
+
+    public void editLoginPw(String nowLoginPw, String newLoginPw) {
+        if (!this.loginPw.equals(nowLoginPw)) {
+            throw new EditException();
+        }
+        this.loginPw = newLoginPw;
     }
 
     //== 시큐리티 설정 ==//
