@@ -15,12 +15,13 @@ class MemberTest {
         Member member = Member.builder()
                 .loginPw("harry1234!")
                 .build();
+        String newLoginPw = "new1234!@";
 
         //when
         String errorLoginPw = "error1234!";
 
         //then
-        assertThatThrownBy(() -> member.editLoginPw(errorLoginPw))
+        assertThatThrownBy(() -> member.editLoginPw(errorLoginPw, newLoginPw))
                 .isInstanceOf(EditException.class);
 
     }
@@ -35,7 +36,7 @@ class MemberTest {
         String newLoginPw = "new1234!@";
 
         //when
-        member.editLoginPw(newLoginPw);
+        member.editLoginPw(member.getLoginPw(), newLoginPw);
 
         //then
         assertThat(member.getLoginPw()).isEqualTo(newLoginPw);
