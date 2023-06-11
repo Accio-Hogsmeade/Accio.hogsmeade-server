@@ -19,4 +19,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Long> existEmail(@Param("email") String email);
 
     Optional<Member> findByLoginId(@Param("loginId") String loginId);
+
+    @Query("select m.loginId from Member m where m.email=:email")
+    Optional<String> findLoginIdByEmail(@Param("email") String email);
 }
