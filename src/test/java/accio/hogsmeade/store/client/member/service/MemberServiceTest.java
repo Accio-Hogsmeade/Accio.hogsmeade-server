@@ -2,6 +2,7 @@ package accio.hogsmeade.store.client.member.service;
 
 import accio.hogsmeade.store.client.member.Member;
 import accio.hogsmeade.store.client.member.repository.MemberRepository;
+import accio.hogsmeade.store.client.member.service.dto.EditLoginPwDto;
 import accio.hogsmeade.store.client.member.service.dto.SignupMemberDto;
 import accio.hogsmeade.store.common.Address;
 import accio.hogsmeade.store.common.exception.AuthorityException;
@@ -146,6 +147,26 @@ class MemberServiceTest {
         Optional<Member> findMember = memberRepository.findById(memberId);
         assertThat(findMember).isPresent();
         assertThat(findMember.get().getActive()).isEqualTo(DEACTIVE);
+    }
+
+    @Test
+    @DisplayName("비밀번호 수정")
+    void editLoginPw() {
+        //given
+        Member member = insertMember();
+        String newLoginPw = member.getLoginPw() + "@";
+        EditLoginPwDto dto = EditLoginPwDto.builder()
+                .nowLoginPw(member.getLoginPw())
+                .newLoginPw(newLoginPw)
+                .build();
+
+        //when
+        Long memberId = memberService.editLoginPw(member.getLoginId(), dto);
+
+        //then
+        Optional<Member> findMember = memberRepository.findById(memberId);
+        assertThat(findMember).isPresent();
+        assertThat(findMember.get().getLoginPw()).isEqualTo(newLoginPw);
     }
 
     private Member insertMember() {
