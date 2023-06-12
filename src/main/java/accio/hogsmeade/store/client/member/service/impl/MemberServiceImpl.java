@@ -3,6 +3,7 @@ package accio.hogsmeade.store.client.member.service.impl;
 import accio.hogsmeade.store.client.member.Member;
 import accio.hogsmeade.store.client.member.repository.MemberRepository;
 import accio.hogsmeade.store.client.member.service.MemberService;
+import accio.hogsmeade.store.client.member.service.dto.EditAddressDto;
 import accio.hogsmeade.store.client.member.service.dto.EditLoginPwDto;
 import accio.hogsmeade.store.client.member.service.dto.SignupMemberDto;
 import accio.hogsmeade.store.common.exception.DuplicateException;
@@ -91,5 +92,10 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(NoSuchElementException::new);
         member.editEmail(newEmail);
         return member.getId();
+    }
+
+    @Override
+    public Long editAddress(String loginId, EditAddressDto dto) {
+        return null;
     }
 }
