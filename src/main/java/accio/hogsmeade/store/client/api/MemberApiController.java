@@ -1,6 +1,7 @@
 package accio.hogsmeade.store.client.api;
 
 import accio.hogsmeade.store.client.api.request.member.EditLoginPwRequest;
+import accio.hogsmeade.store.client.api.request.member.EditTelRequest;
 import accio.hogsmeade.store.client.member.service.MemberService;
 import accio.hogsmeade.store.client.member.service.dto.EditLoginPwDto;
 import accio.hogsmeade.store.jwt.SecurityUtil;
@@ -38,5 +39,17 @@ public class MemberApiController {
                 .build();
         Long memberId = memberService.editLoginPw(loginId, dto);
         log.debug("editLoginPw={}", memberId);
+    }
+
+    @ApiOperation(value = "연락처 변경")
+    @PutMapping("/tel")
+    public void editTel(@Valid @RequestBody EditTelRequest request) {
+        log.debug("EditTelRequest={}", request);
+
+        String loginId = SecurityUtil.getCurrentLoginId();
+        log.debug("loginId={}", loginId);
+
+        Long memberId = memberService.editTel(loginId, request.getNewTel());
+        log.debug("editTel={}", memberId);
     }
 }
