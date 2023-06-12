@@ -41,4 +41,20 @@ class MemberTest {
         //then
         assertThat(member.getLoginPw()).isEqualTo(newLoginPw);
     }
+
+    @Test
+    @DisplayName("연락처 변경")
+    void editTel() {
+        //given
+        Member member = Member.builder()
+                .tel("010-1234-1234")
+                .build();
+        String newTel = "010-5678-5678";
+
+        //when
+        member.editTel(newTel);
+
+        //then
+        assertThat(member.getTel()).isEqualTo(newTel);
+    }
 }
