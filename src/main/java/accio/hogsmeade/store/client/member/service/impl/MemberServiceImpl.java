@@ -6,6 +6,7 @@ import accio.hogsmeade.store.client.member.service.MemberService;
 import accio.hogsmeade.store.client.member.service.dto.EditLoginPwDto;
 import accio.hogsmeade.store.client.member.service.dto.SignupMemberDto;
 import accio.hogsmeade.store.common.exception.DuplicateException;
+import accio.hogsmeade.store.common.exception.EditException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +63,17 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Long editTel(String loginId, String newTel) {
-        return null;
+        Optional<Member> findMember = memberRepository.findByTel(newTel);
+        if (findMember.isPresent()) {
+            if (findMember.get().getLoginId().equals(loginId)) {
+                throw new EditException();
+            }
+            throw new DuplicateException();
+        }
+
+        Member member = memberRepository.findByLoginId(loginId)
+                .orElseThrow(NoSuchElementException::new);
+        member.editTel(newTel);
+        return member.getId();
     }
 }
