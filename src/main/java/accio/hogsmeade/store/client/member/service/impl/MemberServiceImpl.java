@@ -76,4 +76,9 @@ public class MemberServiceImpl implements MemberService {
         member.editTel(newTel);
         return member.getId();
     }
+
+    @Override
+    public Long editEmail(String loginId, String newEmail) {
+        return null;
+    }
 }
