@@ -1,5 +1,6 @@
 package accio.hogsmeade.store.client.api;
 
+import accio.hogsmeade.store.client.api.request.member.EditEmailRequest;
 import accio.hogsmeade.store.client.api.request.member.EditLoginPwRequest;
 import accio.hogsmeade.store.client.api.request.member.EditTelRequest;
 import accio.hogsmeade.store.client.member.service.MemberService;
@@ -51,5 +52,17 @@ public class MemberApiController {
 
         Long memberId = memberService.editTel(loginId, request.getNewTel());
         log.debug("editTel={}", memberId);
+    }
+
+    @ApiOperation(value = "이메일 변경")
+    @PutMapping("/email")
+    public void editEmail(@Valid @RequestBody EditEmailRequest request) {
+        log.debug("EditEmailRequest={}", request);
+
+        String loginId = SecurityUtil.getCurrentLoginId();
+        log.debug("loginId={}", loginId);
+
+        Long memberId = memberService.editEmail(loginId, request.getNewEmail());
+        log.debug("editEmail={}", memberId);
     }
 }
