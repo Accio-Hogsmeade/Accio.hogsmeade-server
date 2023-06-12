@@ -190,7 +190,7 @@ class MemberServiceTest {
                 .schoolGroup(GRYFFINDOR)
                 .active(ACTIVE)
                 .build();
-        memberRepository.save(member);
+        memberRepository.save(targetMember);
 
         //when
 
