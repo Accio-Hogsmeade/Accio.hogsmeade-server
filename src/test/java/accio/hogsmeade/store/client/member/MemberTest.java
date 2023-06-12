@@ -57,4 +57,20 @@ class MemberTest {
         //then
         assertThat(member.getTel()).isEqualTo(newTel);
     }
+
+    @Test
+    @DisplayName("이메일 변경")
+    void editEmail() {
+        //given
+        Member member = Member.builder()
+                .email("harry@naver.com")
+                .build();
+        String newEmail = "potter@naver.com";
+
+        //when
+        member.editEmail(newEmail);
+
+        //then
+        assertThat(member.getEmail()).isEqualTo(newEmail);
+    }
 }
