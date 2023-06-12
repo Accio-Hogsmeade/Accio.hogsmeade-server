@@ -7,6 +7,7 @@ import accio.hogsmeade.store.client.member.service.dto.SignupMemberDto;
 import accio.hogsmeade.store.common.Address;
 import accio.hogsmeade.store.common.exception.AuthorityException;
 import accio.hogsmeade.store.common.exception.DuplicateException;
+import accio.hogsmeade.store.common.exception.EditException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -167,6 +168,64 @@ class MemberServiceTest {
         Optional<Member> findMember = memberRepository.findById(memberId);
         assertThat(findMember).isPresent();
         assertThat(findMember.get().getLoginPw()).isEqualTo(newLoginPw);
+    }
+
+    @Test
+    @DisplayName("연락처 변경#연락처 중복")
+    void duplicationNewTel() {
+        //given
+        Member member = insertMember();
+        Member targetMember = Member.builder()
+                .loginId("harry1")
+                .loginPw("harry1234!")
+                .name("harry potter")
+                .tel("010-5678-5678")
+                .email("harry1@naver.com")
+                .address(Address.builder()
+                        .zipcode("12345")
+                        .mainAddress("main address")
+                        .detailAddress("detail address")
+                        .build())
+                .identity(STUDENT)
+                .schoolGroup(GRYFFINDOR)
+                .active(ACTIVE)
+                .build();
+        memberRepository.save(member);
+
+        //when
+
+        //then
+        assertThatThrownBy(() -> memberService.editTel(member.getLoginId(), targetMember.getTel()))
+                .isInstanceOf(DuplicateException.class);
+    }
+
+    @Test
+    @DisplayName("연락처 변경#기존 연락처와 동일")
+    void equalNowTel() {
+        //given
+        Member member = insertMember();
+
+        //when
+
+        //then
+        assertThatThrownBy(() -> memberService.editTel(member.getLoginId(), member.getTel()))
+                .isInstanceOf(EditException.class);
+    }
+
+    @Test
+    @DisplayName("연락처 변경")
+    void editTel() {
+        //given
+        Member member = insertMember();
+        String newTel = "010-5678-5678";
+
+        //when
+        Long memberId = memberService.editTel(member.getLoginId(), newTel);
+
+        //then
+        Optional<Member> findMember = memberRepository.findById(memberId);
+        assertThat(findMember).isPresent();
+        assertThat(findMember.get().getTel()).isEqualTo(newTel);
     }
 
     private Member insertMember() {
