@@ -12,4 +12,6 @@ public interface MemberService {
     Long withdrawal(String loginId, String loginPw);
 
     Long editLoginPw(String loginId, EditLoginPwDto dto);
+
+    Long editTel(String loginId, String newTel);
 }

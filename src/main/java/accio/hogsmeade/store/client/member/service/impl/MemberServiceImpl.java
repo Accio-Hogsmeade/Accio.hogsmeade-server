@@ -59,4 +59,9 @@ public class MemberServiceImpl implements MemberService {
 
         return findMember.getId();
     }
+
+    @Override
+    public Long editTel(String loginId, String newTel) {
+        return null;
+    }
 }
