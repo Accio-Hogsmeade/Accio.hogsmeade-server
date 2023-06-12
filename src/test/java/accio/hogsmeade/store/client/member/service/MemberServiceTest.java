@@ -21,8 +21,7 @@ import static accio.hogsmeade.store.client.member.Identity.STUDENT;
 import static accio.hogsmeade.store.client.member.SchoolGroup.GRYFFINDOR;
 import static accio.hogsmeade.store.common.Active.ACTIVE;
 import static accio.hogsmeade.store.common.Active.DEACTIVE;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -226,6 +225,64 @@ class MemberServiceTest {
         Optional<Member> findMember = memberRepository.findById(memberId);
         assertThat(findMember).isPresent();
         assertThat(findMember.get().getTel()).isEqualTo(newTel);
+    }
+
+    @Test
+    @DisplayName("이메일 변경#이메일 중복")
+    void duplicationNewEmail() {
+        //given
+        Member member = insertMember();
+        Member targetMember = Member.builder()
+                .loginId("harry1")
+                .loginPw("harry1234!")
+                .name("harry potter")
+                .tel("010-5678-5678")
+                .email("potter@naver.com")
+                .address(Address.builder()
+                        .zipcode("12345")
+                        .mainAddress("main address")
+                        .detailAddress("detail address")
+                        .build())
+                .identity(STUDENT)
+                .schoolGroup(GRYFFINDOR)
+                .active(ACTIVE)
+                .build();
+        memberRepository.save(targetMember);
+
+        //when
+
+        //then
+        assertThatThrownBy(() -> memberService.editEmail(member.getLoginId(), targetMember.getEmail()))
+                .isInstanceOf(DuplicateException.class);
+    }
+
+    @Test
+    @DisplayName("이메일 변경#기존 이메일과 동일")
+    void equalNowEmail() {
+        //given
+        Member member = insertMember();
+
+        //when
+
+        //then
+        assertThatThrownBy(() -> memberService.editEmail(member.getLoginId(), member.getEmail()))
+                .isInstanceOf(EditException.class);
+    }
+
+    @Test
+    @DisplayName("이메일 변경")
+    void editEmail() {
+        //given
+        Member member = insertMember();
+        String newEmail = "potter@naver.com";
+
+        //when
+        Long memberId = memberService.editEmail(member.getLoginId(), newEmail);
+
+        //then
+        Optional<Member> findMember = memberRepository.findById(memberId);
+        assertThat(findMember).isPresent();
+        assertThat(findMember.get().getEmail()).isEqualTo(newEmail);
     }
 
     private Member insertMember() {
