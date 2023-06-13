@@ -118,6 +118,10 @@ public class Member extends TimeBaseEntity implements UserDetails {
         this.email = newEmail;
     }
 
+    public void editAddress(Address address) {
+        this.address = address;
+    }
+
     //== 시큐리티 설정 ==//
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
