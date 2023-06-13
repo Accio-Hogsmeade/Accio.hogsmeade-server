@@ -1,9 +1,11 @@
 package accio.hogsmeade.store.client.api;
 
+import accio.hogsmeade.store.client.api.request.member.EditAddressRequest;
 import accio.hogsmeade.store.client.api.request.member.EditEmailRequest;
 import accio.hogsmeade.store.client.api.request.member.EditLoginPwRequest;
 import accio.hogsmeade.store.client.api.request.member.EditTelRequest;
 import accio.hogsmeade.store.client.member.service.MemberService;
+import accio.hogsmeade.store.client.member.service.dto.EditAddressDto;
 import accio.hogsmeade.store.client.member.service.dto.EditLoginPwDto;
 import accio.hogsmeade.store.jwt.SecurityUtil;
 import io.swagger.annotations.Api;
@@ -64,5 +66,22 @@ public class MemberApiController {
 
         Long memberId = memberService.editEmail(loginId, request.getNewEmail());
         log.debug("editEmail={}", memberId);
+    }
+
+    @ApiOperation(value = "주소 변경")
+    @PutMapping("/address")
+    public void editAddress(@Valid @RequestBody EditAddressRequest request) {
+        log.debug("EditAddressRequest={}", request);
+
+        String loginId = SecurityUtil.getCurrentLoginId();
+        log.debug("loginId={}", loginId);
+
+        EditAddressDto dto = EditAddressDto.builder()
+                .zipcode(request.getZipcode())
+                .mainAddress(request.getMainAddress())
+                .detailAddress(request.getDetailAddress())
+                .build();
+        Long memberId = memberService.editAddress(loginId, dto);
+        log.debug("editAddress={}", memberId);
     }
 }
