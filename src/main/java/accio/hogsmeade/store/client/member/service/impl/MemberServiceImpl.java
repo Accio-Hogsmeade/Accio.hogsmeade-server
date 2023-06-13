@@ -3,8 +3,12 @@ package accio.hogsmeade.store.client.member.service.impl;
 import accio.hogsmeade.store.client.member.Member;
 import accio.hogsmeade.store.client.member.repository.MemberRepository;
 import accio.hogsmeade.store.client.member.service.MemberService;
+import accio.hogsmeade.store.client.member.service.dto.EditAddressDto;
+import accio.hogsmeade.store.client.member.service.dto.EditLoginPwDto;
 import accio.hogsmeade.store.client.member.service.dto.SignupMemberDto;
+import accio.hogsmeade.store.common.Address;
 import accio.hogsmeade.store.common.exception.DuplicateException;
+import accio.hogsmeade.store.common.exception.EditException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -47,5 +51,62 @@ public class MemberServiceImpl implements MemberService {
         findMember.withdrawal(loginPw);
 
         return findMember.getId();
+    }
+
+    @Override
+    public Long editLoginPw(String loginId, EditLoginPwDto dto) {
+        Member findMember = memberRepository.findByLoginId(loginId)
+                .orElseThrow(NoSuchElementException::new);
+
+        findMember.editLoginPw(dto.getNowLoginPw(), dto.getNewLoginPw());
+
+        return findMember.getId();
+    }
+
+    @Override
+    public Long editTel(String loginId, String newTel) {
+        Optional<Member> findMember = memberRepository.findByTel(newTel);
+        if (findMember.isPresent()) {
+            if (findMember.get().getLoginId().equals(loginId)) {
+                throw new EditException();
+            }
+            throw new DuplicateException();
+        }
+
+        Member member = memberRepository.findByLoginId(loginId)
+                .orElseThrow(NoSuchElementException::new);
+        member.editTel(newTel);
+        return member.getId();
+    }
+
+    @Override
+    public Long editEmail(String loginId, String newEmail) {
+        Optional<Member> findMember = memberRepository.findByEmail(newEmail);
+        if (findMember.isPresent()) {
+            if (findMember.get().getLoginId().equals(loginId)) {
+                throw new EditException();
+            }
+            throw new DuplicateException();
+        }
+
+        Member member = memberRepository.findByLoginId(loginId)
+                .orElseThrow(NoSuchElementException::new);
+        member.editEmail(newEmail);
+        return member.getId();
+    }
+
+    @Override
+    public Long editAddress(String loginId, EditAddressDto dto) {
+        Member member = memberRepository.findByLoginId(loginId)
+                .orElseThrow(NoSuchElementException::new);
+
+        Address newAddress = Address.builder()
+                .zipcode(dto.getZipcode())
+                .mainAddress(dto.getMainAddress())
+                .detailAddress(dto.getDetailAddress())
+                .build();
+        member.editAddress(newAddress);
+
+        return member.getId();
     }
 }
