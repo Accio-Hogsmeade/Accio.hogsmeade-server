@@ -2,6 +2,7 @@ package accio.hogsmeade.store.client.member.service;
 
 import accio.hogsmeade.store.client.member.Member;
 import accio.hogsmeade.store.client.member.repository.MemberRepository;
+import accio.hogsmeade.store.client.member.service.dto.EditAddressDto;
 import accio.hogsmeade.store.client.member.service.dto.EditLoginPwDto;
 import accio.hogsmeade.store.client.member.service.dto.SignupMemberDto;
 import accio.hogsmeade.store.common.Address;
@@ -283,6 +284,26 @@ class MemberServiceTest {
         Optional<Member> findMember = memberRepository.findById(memberId);
         assertThat(findMember).isPresent();
         assertThat(findMember.get().getEmail()).isEqualTo(newEmail);
+    }
+
+    @Test
+    @DisplayName("주소 변경")
+    void editAddress() {
+        //given
+        Member member = insertMember();
+        EditAddressDto newAddress = EditAddressDto.builder()
+                .zipcode("11111")
+                .mainAddress("new main address")
+                .detailAddress("new detail address")
+                .build();
+
+        //when
+        Long memberId = memberService.editAddress(member.getLoginId(), newAddress);
+
+        //then
+        Optional<Member> findMember = memberRepository.findById(memberId);
+        assertThat(findMember).isPresent();
+        assertThat(findMember.get().getAddress().getZipcode()).isEqualTo(newAddress.getZipcode());
     }
 
     private Member insertMember() {
