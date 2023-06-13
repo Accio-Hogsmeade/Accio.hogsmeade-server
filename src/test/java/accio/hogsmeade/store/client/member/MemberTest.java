@@ -1,5 +1,6 @@
 package accio.hogsmeade.store.client.member;
 
+import accio.hogsmeade.store.common.Address;
 import accio.hogsmeade.store.common.exception.EditException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -72,5 +73,29 @@ class MemberTest {
 
         //then
         assertThat(member.getEmail()).isEqualTo(newEmail);
+    }
+
+    @Test
+    @DisplayName("주소 변경")
+    void editAddress() {
+        //given
+        Member member = Member.builder()
+                .address(Address.builder()
+                        .zipcode("12345")
+                        .mainAddress("main address")
+                        .detailAddress("detail address")
+                        .build())
+                .build();
+        Address newAddress = Address.builder()
+                .zipcode("11111")
+                .mainAddress("new main address")
+                .detailAddress("new detail address")
+                .build();
+
+        //when
+        member.editAddress(newAddress);
+
+        //then
+        assertThat(member.getAddress()).isEqualTo(newAddress);
     }
 }
