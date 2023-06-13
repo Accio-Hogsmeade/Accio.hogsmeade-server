@@ -6,6 +6,7 @@ import accio.hogsmeade.store.client.member.service.MemberService;
 import accio.hogsmeade.store.client.member.service.dto.EditAddressDto;
 import accio.hogsmeade.store.client.member.service.dto.EditLoginPwDto;
 import accio.hogsmeade.store.client.member.service.dto.SignupMemberDto;
+import accio.hogsmeade.store.common.Address;
 import accio.hogsmeade.store.common.exception.DuplicateException;
 import accio.hogsmeade.store.common.exception.EditException;
 import lombok.RequiredArgsConstructor;
@@ -96,6 +97,16 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Long editAddress(String loginId, EditAddressDto dto) {
-        return null;
+        Member member = memberRepository.findByLoginId(loginId)
+                .orElseThrow(NoSuchElementException::new);
+
+        Address newAddress = Address.builder()
+                .zipcode(dto.getZipcode())
+                .mainAddress(dto.getMainAddress())
+                .detailAddress(dto.getDetailAddress())
+                .build();
+        member.editAddress(newAddress);
+
+        return member.getId();
     }
 }
