@@ -1,5 +1,7 @@
 package accio.hogsmeade.store.store.store;
 
+import accio.hogsmeade.store.common.Active;
+import accio.hogsmeade.store.common.TimeBaseEntity;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,6 +12,7 @@ import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,6 +48,9 @@ public class Store extends TimeBaseEntity implements UserDetails {
     @ElementCollection(fetch = EAGER)
     private List<String> roles = new ArrayList<>();
 
+    public Store() {
+    }
+
     @Builder
     public Store(Long id, String loginId, String loginPw, String shopkeeper, String tel, String email, String storeName, String storeInfo, Active active, List<String> roles) {
         this.id = id;
@@ -58,6 +64,8 @@ public class Store extends TimeBaseEntity implements UserDetails {
         this.active = active;
         this.roles = roles;
     }
+
+
 
     public static Store createStore(String loginId, String loginPw, String shopkeeper, String tel, String email, String storeName, String storeInfo) {
         return Store.builder()

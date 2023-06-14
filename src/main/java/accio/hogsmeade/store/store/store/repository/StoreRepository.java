@@ -9,12 +9,12 @@ import java.util.Optional;
 
 public interface StoreRepository extends JpaRepository<Store, Long> {
 
-    @Query("select s.id from STORE s where s.loginId=:loginId")
+    @Query("select s.id from Store s where s.loginId=:loginId")
     Optional<Long> existLoginId(@Param("loginId") String loginId);
 
-    @Query("select s.id from STORE s where s.tel=:tel")
+    @Query("select s.id from Store s where s.tel=:tel")
     Optional<Long> existTel(@Param("tel") String tel);
 
-    @Query("select s.id from STORE s where s.email=:email")
+    @Query("select s.id from Store s where s.email=:email")
     Optional<Long> existEmail(@Param("email") String email);
 }
