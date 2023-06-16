@@ -3,6 +3,7 @@ package accio.hogsmeade.store.client.board;
 import accio.hogsmeade.store.client.member.Member;
 import accio.hogsmeade.store.common.Active;
 import accio.hogsmeade.store.common.TimeBaseEntity;
+import accio.hogsmeade.store.common.UploadFile;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static accio.hogsmeade.store.common.Active.ACTIVE;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.FetchType.*;
 import static lombok.AccessLevel.PROTECTED;
@@ -59,5 +61,32 @@ public class Board extends TimeBaseEntity {
         this.member = member;
         this.category = category;
         this.images = images;
+    }
+
+    //== 연관관계 편의 메서드 ==//
+    public static Board createBoard(String title, String content, Member member, Long categoryId, List<UploadFile> files) {
+        Board board = Board.builder()
+                .title(title)
+                .content(content)
+                .voteCount(0)
+                .scrapCount(0)
+                .commentCount(0)
+                .active(ACTIVE)
+                .member(member)
+                .category(BoardCategory.builder().id(categoryId).build())
+                .images(new ArrayList<>())
+                .build();
+        for (UploadFile file : files) {
+            BoardImage image = BoardImage.builder()
+                    .uploadFile(file)
+                    .board(board)
+                    .build();
+            board.addBoardImage(image);
+        }
+        return board;
+    }
+
+    public void addBoardImage(BoardImage image) {
+        this.images.add(image);
     }
 }
