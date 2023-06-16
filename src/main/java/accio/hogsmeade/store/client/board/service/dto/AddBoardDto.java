@@ -9,12 +9,14 @@ import java.util.List;
 @Data
 public class AddBoardDto {
 
+    private Long boardCategoryId;
     private String title;
     private String content;
     private List<UploadFile> files;
 
     @Builder
-    public AddBoardDto(String title, String content, List<UploadFile> files) {
+    public AddBoardDto(Long boardCategoryId, String title, String content, List<UploadFile> files) {
+        this.boardCategoryId = boardCategoryId;
         this.title = title;
         this.content = content;
         this.files = files;
