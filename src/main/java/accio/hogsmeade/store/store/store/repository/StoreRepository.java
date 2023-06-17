@@ -17,4 +17,6 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
 
     @Query("select s.id from Store s where s.email=:email")
     Optional<Long> existEmail(@Param("email") String email);
+
+    Optional<Store> findByLoginId(@Param("loginId") String loginId);
 }
