@@ -1,5 +1,6 @@
 package accio.hogsmeade.store.store.store.service;
 
+import accio.hogsmeade.store.common.exception.AuthorityException;
 import accio.hogsmeade.store.common.exception.DuplicateException;
 import accio.hogsmeade.store.store.store.Store;
 import accio.hogsmeade.store.store.store.repository.StoreRepository;
@@ -10,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static accio.hogsmeade.store.common.Active.ACTIVE;
+import static accio.hogsmeade.store.common.Active.DEACTIVE;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -93,6 +96,50 @@ class StoreServiceTest {
         //then
         Optional<Store> findStore = storeRepository.findById(storeId);
         assertThat(findStore).isPresent();
+    }
+
+    @Test
+    @DisplayName("상점회원탈퇴#비밀번호 불일치")
+    void notEqualLoginPw() {
+        //given
+        Store targetStore = insertStore();
+
+        //when
+        String loginPw = targetStore.getLoginPw() + "@";
+
+        //then
+        assertThatThrownBy(() -> storeService.withdrawal(targetStore.getLoginId(), loginPw))
+                .isInstanceOf(AuthorityException.class);
+    }
+
+    @Test
+    @DisplayName("상점회원탈퇴#존재하지 않는 회원")
+    void notExistStore() {
+        //given
+
+        //when
+        String loginId = "abcde";
+        String loginPw = "abc1234!";
+
+        //then
+        assertThatThrownBy(() -> storeService.withdrawal(loginId, loginPw))
+                .isInstanceOf(NoSuchElementException.class);
+
+    }
+
+    @Test
+    @DisplayName("상점회원탈퇴")
+    void withdrawal() {
+        //given
+        Store targetStore = insertStore();
+
+        //when
+        Long storeId = storeService.withdrawal(targetStore.getLoginId(), targetStore.getLoginPw());
+
+        //then
+        Optional<Store> findStore = storeRepository.findById(storeId);
+        assertThat(findStore).isPresent();
+        assertThat(findStore.get().getActive()).isEqualTo(DEACTIVE);
     }
 
     private Store insertStore() {
