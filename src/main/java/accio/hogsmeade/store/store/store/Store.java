@@ -2,6 +2,7 @@ package accio.hogsmeade.store.store.store;
 
 import accio.hogsmeade.store.common.Active;
 import accio.hogsmeade.store.common.TimeBaseEntity;
+import accio.hogsmeade.store.common.exception.AuthorityException;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -65,8 +66,6 @@ public class Store extends TimeBaseEntity implements UserDetails {
         this.roles = roles;
     }
 
-
-
     public static Store createStore(String loginId, String loginPw, String shopkeeper, String tel, String email, String storeName, String storeInfo) {
         return Store.builder()
                 .loginId(loginId)
@@ -79,6 +78,13 @@ public class Store extends TimeBaseEntity implements UserDetails {
                 .active(ACTIVE)
                 .roles(Collections.singletonList("STORE"))
                 .build();
+    }
+
+    public void withdrawal(String loginPw) {
+        if (!this.loginPw.equals(loginPw)) {
+            throw new AuthorityException();
+        }
+        this.active = DEACTIVE;
     }
 
     @Override

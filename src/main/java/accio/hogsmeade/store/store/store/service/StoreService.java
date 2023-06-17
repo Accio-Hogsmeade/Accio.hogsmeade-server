@@ -7,4 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface StoreService {
 
     Long signup(SignupStoreDto dto);
+
+    Long withdrawal(String loginId, String loginPw);
 }
