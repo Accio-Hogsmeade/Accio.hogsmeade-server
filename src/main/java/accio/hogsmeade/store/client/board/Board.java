@@ -89,4 +89,9 @@ public class Board extends TimeBaseEntity {
     public void addBoardImage(BoardImage image) {
         this.images.add(image);
     }
+
+    //== 비즈니스 로직 ==//
+    public void edit(String title, String content, Long categoryId) {
+
+    }
 }
