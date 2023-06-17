@@ -4,6 +4,7 @@ import accio.hogsmeade.store.client.board.Board;
 import accio.hogsmeade.store.client.board.repository.BoardRepository;
 import accio.hogsmeade.store.client.board.service.BoardService;
 import accio.hogsmeade.store.client.board.service.dto.AddBoardDto;
+import accio.hogsmeade.store.client.board.service.dto.EditBoardDto;
 import accio.hogsmeade.store.client.member.Member;
 import accio.hogsmeade.store.client.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,10 @@ public class BoardServiceImpl implements BoardService {
         boardRepository.save(board);
 
         return board.getId();
+    }
+
+    @Override
+    public Long editBoard(Long boardId, EditBoardDto dto) {
+        return null;
     }
 }
