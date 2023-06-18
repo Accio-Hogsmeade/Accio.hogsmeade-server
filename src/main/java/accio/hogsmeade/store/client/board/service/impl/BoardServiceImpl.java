@@ -64,4 +64,9 @@ public class BoardServiceImpl implements BoardService {
 
         return savedBoardVote.getId();
     }
+
+    @Override
+    public Long cancelVote(String loginId, Long boardId) {
+        return null;
+    }
 }
