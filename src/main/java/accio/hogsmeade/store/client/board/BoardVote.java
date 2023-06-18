@@ -33,4 +33,14 @@ public class BoardVote extends TimeBaseEntity {
         this.member = member;
         this.board = board;
     }
+
+    //== 연관관계 편의 메서드 ==//
+    public static BoardVote createBoardVote(Member member, Board board) {
+        BoardVote boardVote = BoardVote.builder()
+                .member(member)
+                .board(board)
+                .build();
+        board.increaseVoteCount();
+        return boardVote;
+    }
 }
