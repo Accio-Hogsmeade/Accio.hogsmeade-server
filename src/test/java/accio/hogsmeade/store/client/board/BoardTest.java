@@ -60,4 +60,19 @@ class BoardTest {
         //then
         assertThat(board.getVoteCount()).isEqualTo(1);
     }
+
+    @Test
+    @DisplayName("추천수 감소")
+    void decreaseVoteCount() {
+        //given
+        Board board = Board.builder()
+                .voteCount(1)
+                .build();
+
+        //when
+        board.decreaseVoteCount();
+
+        //then
+        assertThat(board.getVoteCount()).isEqualTo(0);
+    }
 }
