@@ -80,4 +80,15 @@ public class BoardApiController {
         Long boardVoteId = boardService.addVote(loginId, boardId);
         log.debug("addVote={}", boardVoteId);
     }
+
+    @ApiOperation(value = "게시글 추천 취소")
+    @DeleteMapping("/{boardId}/vote")
+    public void cancelVote(@PathVariable Long boardId) {
+        log.debug("boardId={}", boardId);
+        String loginId = SecurityUtil.getCurrentLoginId();
+        log.debug("loginId={}", loginId);
+
+        Long boardVoteId = boardService.cancelVote(loginId, boardId);
+        log.debug("cancelVote={}", boardVoteId);
+    }
 }
