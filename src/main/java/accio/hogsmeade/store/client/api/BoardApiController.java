@@ -1,8 +1,10 @@
 package accio.hogsmeade.store.client.api;
 
 import accio.hogsmeade.store.client.api.request.board.AddBoardRequest;
+import accio.hogsmeade.store.client.api.request.board.EditBoardRequest;
 import accio.hogsmeade.store.client.board.service.BoardService;
 import accio.hogsmeade.store.client.board.service.dto.AddBoardDto;
+import accio.hogsmeade.store.client.board.service.dto.EditBoardDto;
 import accio.hogsmeade.store.common.FileStore;
 import accio.hogsmeade.store.common.UploadFile;
 import accio.hogsmeade.store.jwt.SecurityUtil;
@@ -10,10 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -46,5 +45,19 @@ public class BoardApiController {
                 .build();
         Long boardId = boardService.addBoard(loginId, dto);
         log.debug("addBoard={}", boardId);
+    }
+
+    @ApiOperation(value = "게시글 수정")
+    @PutMapping("/{boardId}")
+    public void editBoard(@PathVariable Long boardId, @Valid @RequestBody EditBoardRequest request) {
+        log.debug("EditBoardRequest={}", request);
+
+        EditBoardDto dto = EditBoardDto.builder()
+                .categoryId(request.getCategoryId())
+                .title(request.getTitle())
+                .content(request.getContent())
+                .build();
+        Long editedBoardId = boardService.editBoard(boardId, dto);
+        log.debug("editBoard={}", editedBoardId);
     }
 }
