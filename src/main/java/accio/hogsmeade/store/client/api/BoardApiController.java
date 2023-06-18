@@ -102,4 +102,15 @@ public class BoardApiController {
         Long boardScrapId = boardService.addScrap(loginId, boardId);
         log.debug("addScrap={}", boardScrapId);
     }
+
+    @ApiOperation(value = "게시글 스크랩 취소")
+    @DeleteMapping("/{boardId}/scrap")
+    public void cancelScrap(@PathVariable Long boardId) {
+        log.debug("boardId={}", boardId);
+        String loginId = SecurityUtil.getCurrentLoginId();
+        log.debug("loginId={}", loginId);
+
+        Long boardScrapId = boardService.cancelScrap(loginId, boardId);
+        log.debug("cancelScrap={}", boardScrapId);
+    }
 }
