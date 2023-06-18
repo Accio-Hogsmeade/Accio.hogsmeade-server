@@ -92,6 +92,11 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Long cancelScrap(String loginId, Long boardId) {
-        return null;
+        BoardScrap boardScrap = boardScrapRepository.findByLoginId(loginId, boardId)
+                .orElseThrow(NoSuchElementException::new);
+
+        boardScrap.getBoard().decreaseScrapCount();
+        boardScrapRepository.deleteById(boardScrap.getId());
+        return boardScrap.getId();
     }
 }
