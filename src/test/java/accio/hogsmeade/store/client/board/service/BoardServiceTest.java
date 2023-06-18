@@ -5,6 +5,7 @@ import accio.hogsmeade.store.client.board.BoardCategory;
 import accio.hogsmeade.store.client.board.repository.BoardCategoryRepository;
 import accio.hogsmeade.store.client.board.repository.BoardRepository;
 import accio.hogsmeade.store.client.board.service.dto.AddBoardDto;
+import accio.hogsmeade.store.client.board.service.dto.EditBoardDto;
 import accio.hogsmeade.store.client.member.Member;
 import accio.hogsmeade.store.client.member.repository.MemberRepository;
 import accio.hogsmeade.store.common.Address;
@@ -61,6 +62,26 @@ class BoardServiceTest {
         assertThat(findBoard).isPresent();
     }
 
+    @Test
+    @DisplayName("게시물 수정")
+    void editBoard() {
+        //given
+        Board board = insertBoard();
+        EditBoardDto dto = EditBoardDto.builder()
+                .title("new board title")
+                .content("new board content")
+                .categoryId(board.getCategory().getId())
+                .build();
+
+        //when
+        Long boardId = boardService.editBoard(board.getId(), dto);
+
+        //then
+        Optional<Board> findBoard = boardRepository.findById(boardId);
+        assertThat(findBoard).isPresent();
+        assertThat(findBoard.get().getTitle()).isEqualTo(dto.getTitle());
+    }
+
     private Member insertMember() {
         Member member = Member.builder()
                 .loginId("harry")
@@ -85,5 +106,14 @@ class BoardServiceTest {
                 .name("그리핀도르")
                 .build();
         return boardCategoryRepository.save(boardCategory);
+    }
+
+    private Board insertBoard() {
+        UploadFile uploadFile = UploadFile.builder()
+                .uploadFileName("upload_file_name.jpg")
+                .storeFileName("store_file_name.jpg")
+                .build();
+        Board board = Board.createBoard("board title", "board content", insertMember(), insertBoardCategory().getId(), Collections.singletonList(uploadFile));
+        return boardRepository.save(board);
     }
 }
