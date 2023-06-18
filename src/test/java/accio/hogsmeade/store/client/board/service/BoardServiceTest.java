@@ -120,6 +120,26 @@ class BoardServiceTest {
         assertThat(findBoard.get().getVoteCount()).isEqualTo(1);
     }
 
+    @Test
+    @DisplayName("게시글 추천 취소")
+    void cancelVote() {
+        //given
+        Board board = insertBoard();
+        BoardVote boardVote = BoardVote.createBoardVote(board.getMember(), board);
+        BoardVote savedBoardVote = boardVoteRepository.save(boardVote);
+
+        //when
+        Long boardVoteId = boardService.cancelVote(savedBoardVote.getMember().getLoginId(), savedBoardVote.getBoard().getId());
+
+        //then
+        Optional<BoardVote> findBoardVote = boardVoteRepository.findById(boardVoteId);
+        assertThat(findBoardVote).isEmpty();
+
+        Optional<Board> findBoard = boardRepository.findById(board.getId());
+        assertThat(findBoard).isPresent();
+        assertThat(findBoard.get().getVoteCount()).isEqualTo(0);
+    }
+
     private Member insertMember() {
         Member member = Member.builder()
                 .loginId("harry")
