@@ -89,4 +89,9 @@ public class BoardServiceImpl implements BoardService {
         BoardScrap savedBoardScrap = boardScrapRepository.save(boardScrap);
         return savedBoardScrap.getId();
     }
+
+    @Override
+    public Long cancelScrap(String loginId, Long boardId) {
+        return null;
+    }
 }
