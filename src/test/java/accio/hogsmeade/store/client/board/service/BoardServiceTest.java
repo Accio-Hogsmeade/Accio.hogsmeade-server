@@ -2,9 +2,11 @@ package accio.hogsmeade.store.client.board.service;
 
 import accio.hogsmeade.store.client.board.Board;
 import accio.hogsmeade.store.client.board.BoardCategory;
+import accio.hogsmeade.store.client.board.BoardScrap;
 import accio.hogsmeade.store.client.board.BoardVote;
 import accio.hogsmeade.store.client.board.repository.BoardCategoryRepository;
 import accio.hogsmeade.store.client.board.repository.BoardRepository;
+import accio.hogsmeade.store.client.board.repository.BoardScrapRepository;
 import accio.hogsmeade.store.client.board.repository.BoardVoteRepository;
 import accio.hogsmeade.store.client.board.service.dto.AddBoardDto;
 import accio.hogsmeade.store.client.board.service.dto.EditBoardDto;
@@ -41,6 +43,8 @@ class BoardServiceTest {
     private BoardCategoryRepository boardCategoryRepository;
     @Autowired
     private BoardVoteRepository boardVoteRepository;
+    @Autowired
+    private BoardScrapRepository boardScrapRepository;
 
     @Test
     @DisplayName("게시글 등록")
@@ -138,6 +142,24 @@ class BoardServiceTest {
         Optional<Board> findBoard = boardRepository.findById(board.getId());
         assertThat(findBoard).isPresent();
         assertThat(findBoard.get().getVoteCount()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("게시글 스크랩")
+    void addScrap() {
+        //given
+        Board board = insertBoard();
+
+        //when
+        Long boardScrapId = boardService.addScrap(board.getMember().getLoginId(), board.getId());
+
+        //then
+        Optional<BoardScrap> findBoardScrap = boardScrapRepository.findById(boardScrapId);
+        assertThat(findBoardScrap).isPresent();
+
+        Optional<Board> findBoard = boardRepository.findById(board.getId());
+        assertThat(findBoard).isPresent();
+        assertThat(findBoard.get().getScrapCount()).isEqualTo(1);
     }
 
     private Member insertMember() {
