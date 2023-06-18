@@ -101,4 +101,8 @@ public class Board extends TimeBaseEntity {
     public void remove() {
         this.active = DEACTIVE;
     }
+
+    public void increaseVoteCount() {
+        this.voteCount += 1;
+    }
 }

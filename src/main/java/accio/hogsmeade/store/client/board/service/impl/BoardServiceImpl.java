@@ -1,7 +1,9 @@
 package accio.hogsmeade.store.client.board.service.impl;
 
 import accio.hogsmeade.store.client.board.Board;
+import accio.hogsmeade.store.client.board.BoardVote;
 import accio.hogsmeade.store.client.board.repository.BoardRepository;
+import accio.hogsmeade.store.client.board.repository.BoardVoteRepository;
 import accio.hogsmeade.store.client.board.service.BoardService;
 import accio.hogsmeade.store.client.board.service.dto.AddBoardDto;
 import accio.hogsmeade.store.client.board.service.dto.EditBoardDto;
@@ -17,6 +19,7 @@ import java.util.NoSuchElementException;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
+    private final BoardVoteRepository boardVoteRepository;
     private final MemberRepository memberRepository;
 
     @Override
@@ -46,5 +49,19 @@ public class BoardServiceImpl implements BoardService {
 
         board.remove();
         return board.getId();
+    }
+
+    @Override
+    public Long addVote(String loginId, Long boardId) {
+        Member member = memberRepository.findByLoginId(loginId)
+                .orElseThrow(NoSuchElementException::new);
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(NoSuchElementException::new);
+
+        BoardVote boardVote = BoardVote.createBoardVote(member, board);
+
+        BoardVote savedBoardVote = boardVoteRepository.save(boardVote);
+
+        return savedBoardVote.getId();
     }
 }

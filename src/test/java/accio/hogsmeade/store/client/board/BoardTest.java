@@ -45,4 +45,19 @@ class BoardTest {
         //then
         assertThat(board.getActive()).isEqualTo(DEACTIVE);
     }
+
+    @Test
+    @DisplayName("추천수 증가")
+    void increaseVoteCount() {
+        //given
+        Board board = Board.builder()
+                .voteCount(0)
+                .build();
+
+        //when
+        board.increaseVoteCount();
+
+        //then
+        assertThat(board.getVoteCount()).isEqualTo(1);
+    }
 }
