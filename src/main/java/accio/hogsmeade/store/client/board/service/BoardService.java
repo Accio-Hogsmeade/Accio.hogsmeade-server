@@ -16,4 +16,6 @@ public interface BoardService {
     Long addVote(String loginId, Long boardId);
 
     Long cancelVote(String loginId, Long boardId);
+
+    Long addScrap(String loginId, Long boardId);
 }

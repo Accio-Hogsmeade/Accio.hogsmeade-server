@@ -91,4 +91,15 @@ public class BoardApiController {
         Long boardVoteId = boardService.cancelVote(loginId, boardId);
         log.debug("cancelVote={}", boardVoteId);
     }
+
+    @ApiOperation(value = "게시글 스크랩")
+    @PostMapping("/{boardId}/scrap")
+    public void addScrap(@PathVariable Long boardId) {
+        log.debug("boardId={}", boardId);
+        String loginId = SecurityUtil.getCurrentLoginId();
+        log.debug("loginId={}", loginId);
+
+        Long boardScrapId = boardService.addScrap(loginId, boardId);
+        log.debug("addScrap={}", boardScrapId);
+    }
 }

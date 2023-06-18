@@ -109,4 +109,8 @@ public class Board extends TimeBaseEntity {
     public void decreaseVoteCount() {
         this.voteCount -= 1;
     }
+
+    public void increaseScrapCount() {
+        this.scrapCount += 1;
+    }
 }
