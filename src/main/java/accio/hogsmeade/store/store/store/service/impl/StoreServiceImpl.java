@@ -8,6 +8,7 @@ import accio.hogsmeade.store.common.exception.DuplicateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -36,5 +37,15 @@ public class StoreServiceImpl implements StoreService {
         Store store = Store.createStore(dto.getLoginId(), dto.getLoginPw(), dto.getShopkeeper(), dto.getTel(), dto.getEmail(), dto.getStoreName(), dto.getStoreInfo());
         Store savedStore = storeRepository.save(store);
         return savedStore.getId();
+    }
+
+    @Override
+    public Long withdrawal(String loginId, String loginPw) {
+        Store findStore = storeRepository.findByLoginId(loginId)
+                .orElseThrow(NoSuchElementException::new);
+
+        findStore.withdrawal(loginPw);
+
+        return findStore.getId();
     }
 }
