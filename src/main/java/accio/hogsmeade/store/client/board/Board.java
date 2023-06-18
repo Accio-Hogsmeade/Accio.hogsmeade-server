@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static accio.hogsmeade.store.common.Active.ACTIVE;
+import static accio.hogsmeade.store.common.Active.DEACTIVE;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.FetchType.*;
 import static lombok.AccessLevel.PROTECTED;
@@ -95,5 +96,9 @@ public class Board extends TimeBaseEntity {
         this.title = title;
         this.content = content;
         this.category = BoardCategory.builder().id(categoryId).build();
+    }
+
+    public void remove() {
+        this.active = DEACTIVE;
     }
 }

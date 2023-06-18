@@ -22,6 +22,7 @@ import java.util.Optional;
 import static accio.hogsmeade.store.client.member.Identity.STUDENT;
 import static accio.hogsmeade.store.client.member.SchoolGroup.GRYFFINDOR;
 import static accio.hogsmeade.store.common.Active.ACTIVE;
+import static accio.hogsmeade.store.common.Active.DEACTIVE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -80,6 +81,21 @@ class BoardServiceTest {
         Optional<Board> findBoard = boardRepository.findById(boardId);
         assertThat(findBoard).isPresent();
         assertThat(findBoard.get().getTitle()).isEqualTo(dto.getTitle());
+    }
+
+    @Test
+    @DisplayName("게시글 삭제")
+    void removeBoard() {
+        //given
+        Board board = insertBoard();
+
+        //when
+        Long boardId = boardService.removeBoard(board.getId());
+
+        //then
+        Optional<Board> findBoard = boardRepository.findById(boardId);
+        assertThat(findBoard).isPresent();
+        assertThat(findBoard.get().getActive()).isEqualTo(DEACTIVE);
     }
 
     private Member insertMember() {

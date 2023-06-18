@@ -38,4 +38,13 @@ public class BoardServiceImpl implements BoardService {
         board.edit(dto.getTitle(), dto.getContent(), dto.getCategoryId());
         return board.getId();
     }
+
+    @Override
+    public Long removeBoard(Long boardId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(NoSuchElementException::new);
+
+        board.remove();
+        return board.getId();
+    }
 }
