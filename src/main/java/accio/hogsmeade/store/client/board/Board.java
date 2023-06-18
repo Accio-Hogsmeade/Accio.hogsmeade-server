@@ -92,6 +92,8 @@ public class Board extends TimeBaseEntity {
 
     //== 비즈니스 로직 ==//
     public void edit(String title, String content, Long categoryId) {
-
+        this.title = title;
+        this.content = content;
+        this.category = BoardCategory.builder().id(categoryId).build();
     }
 }
