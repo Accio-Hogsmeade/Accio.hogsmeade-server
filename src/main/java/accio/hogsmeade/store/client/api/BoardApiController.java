@@ -69,4 +69,15 @@ public class BoardApiController {
         Long removedBoardId = boardService.removeBoard(boardId);
         log.debug("removeBoard={}", removedBoardId);
     }
+
+    @ApiOperation(value = "게시글 추천")
+    @PostMapping("/{boardId}/vote")
+    public void addVote(@PathVariable Long boardId) {
+        log.debug("boardId={}", boardId);
+        String loginId = SecurityUtil.getCurrentLoginId();
+        log.debug("loginId={}", loginId);
+
+        Long boardVoteId = boardService.addVote(loginId, boardId);
+        log.debug("addVote={}", boardVoteId);
+    }
 }
