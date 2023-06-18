@@ -1,8 +1,10 @@
 package accio.hogsmeade.store.client.board.service.impl;
 
 import accio.hogsmeade.store.client.board.Board;
+import accio.hogsmeade.store.client.board.BoardReport;
 import accio.hogsmeade.store.client.board.BoardScrap;
 import accio.hogsmeade.store.client.board.BoardVote;
+import accio.hogsmeade.store.client.board.repository.BoardReportRepository;
 import accio.hogsmeade.store.client.board.repository.BoardRepository;
 import accio.hogsmeade.store.client.board.repository.BoardScrapRepository;
 import accio.hogsmeade.store.client.board.repository.BoardVoteRepository;
@@ -23,6 +25,7 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
     private final BoardVoteRepository boardVoteRepository;
     private final BoardScrapRepository boardScrapRepository;
+    private final BoardReportRepository boardReportRepository;
     private final MemberRepository memberRepository;
 
     @Override
@@ -98,5 +101,15 @@ public class BoardServiceImpl implements BoardService {
         boardScrap.getBoard().decreaseScrapCount();
         boardScrapRepository.deleteById(boardScrap.getId());
         return boardScrap.getId();
+    }
+
+    @Override
+    public Long addReport(String loginId, Long boardId, String reason) {
+        Member member = memberRepository.findByLoginId(loginId)
+                .orElseThrow(NoSuchElementException::new);
+
+        BoardReport boardReport = BoardReport.create(reason, member.getId(), boardId);
+        BoardReport savedBoardReport = boardReportRepository.save(boardReport);
+        return savedBoardReport.getId();
     }
 }
