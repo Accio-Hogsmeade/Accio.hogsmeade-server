@@ -2,8 +2,10 @@ package accio.hogsmeade.store.client.board.service;
 
 import accio.hogsmeade.store.client.board.Board;
 import accio.hogsmeade.store.client.board.BoardCategory;
+import accio.hogsmeade.store.client.board.BoardVote;
 import accio.hogsmeade.store.client.board.repository.BoardCategoryRepository;
 import accio.hogsmeade.store.client.board.repository.BoardRepository;
+import accio.hogsmeade.store.client.board.repository.BoardVoteRepository;
 import accio.hogsmeade.store.client.board.service.dto.AddBoardDto;
 import accio.hogsmeade.store.client.board.service.dto.EditBoardDto;
 import accio.hogsmeade.store.client.member.Member;
@@ -37,6 +39,8 @@ class BoardServiceTest {
     private MemberRepository memberRepository;
     @Autowired
     private BoardCategoryRepository boardCategoryRepository;
+    @Autowired
+    private BoardVoteRepository boardVoteRepository;
 
     @Test
     @DisplayName("게시글 등록")
@@ -96,6 +100,24 @@ class BoardServiceTest {
         Optional<Board> findBoard = boardRepository.findById(boardId);
         assertThat(findBoard).isPresent();
         assertThat(findBoard.get().getActive()).isEqualTo(DEACTIVE);
+    }
+    
+    @Test
+    @DisplayName("게시글 추천")
+    void addVote() {
+        //given
+        Board board = insertBoard();
+
+        //when
+        Long boardVoteId = boardService.addVote(board.getMember().getLoginId(), board.getId());
+
+        //then
+        Optional<BoardVote> findBoardVote = boardVoteRepository.findById(boardVoteId);
+        assertThat(findBoardVote).isPresent();
+
+        Optional<Board> findBoard = boardRepository.findById(board.getId());
+        assertThat(findBoard).isPresent();
+        assertThat(findBoard.get().getVoteCount()).isEqualTo(1);
     }
 
     private Member insertMember() {
