@@ -12,4 +12,6 @@ public interface BoardService {
     Long editBoard(Long boardId, EditBoardDto dto);
 
     Long removeBoard(Long boardId);
+
+    Long addVote(String loginId, Long boardId);
 }

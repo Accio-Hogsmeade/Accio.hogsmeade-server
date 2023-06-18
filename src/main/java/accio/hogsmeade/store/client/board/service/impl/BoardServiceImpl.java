@@ -47,4 +47,9 @@ public class BoardServiceImpl implements BoardService {
         board.remove();
         return board.getId();
     }
+
+    @Override
+    public Long addVote(String loginId, Long boardId) {
+        return null;
+    }
 }
