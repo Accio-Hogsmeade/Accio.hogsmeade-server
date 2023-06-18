@@ -99,4 +99,9 @@ public class BoardServiceImpl implements BoardService {
         boardScrapRepository.deleteById(boardScrap.getId());
         return boardScrap.getId();
     }
+
+    @Override
+    public Long addReport(String loginId, Long boardId, String reason) {
+        return null;
+    }
 }
