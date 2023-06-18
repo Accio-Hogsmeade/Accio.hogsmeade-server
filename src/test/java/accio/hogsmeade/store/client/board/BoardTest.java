@@ -75,4 +75,19 @@ class BoardTest {
         //then
         assertThat(board.getVoteCount()).isEqualTo(0);
     }
+
+    @Test
+    @DisplayName("스크랩수 증가")
+    void increaseScrapCount() {
+        //given
+        Board board = Board.builder()
+                .scrapCount(0)
+                .build();
+
+        //when
+        board.increaseScrapCount();
+
+        //then
+        assertThat(board.getScrapCount()).isEqualTo(1);
+    }
 }
