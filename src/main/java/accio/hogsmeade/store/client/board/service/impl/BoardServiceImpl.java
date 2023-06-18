@@ -38,4 +38,9 @@ public class BoardServiceImpl implements BoardService {
         board.edit(dto.getTitle(), dto.getContent(), dto.getCategoryId());
         return board.getId();
     }
+
+    @Override
+    public Long removeBoard(Long boardId) {
+        return null;
+    }
 }
