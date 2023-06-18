@@ -18,4 +18,6 @@ public interface BoardService {
     Long cancelVote(String loginId, Long boardId);
 
     Long addScrap(String loginId, Long boardId);
+
+    Long cancelScrap(String loginId, Long boardId);
 }

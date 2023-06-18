@@ -90,4 +90,19 @@ class BoardTest {
         //then
         assertThat(board.getScrapCount()).isEqualTo(1);
     }
+
+    @Test
+    @DisplayName("스크랩수 감소")
+    void decreaseScrapCount() {
+        //given
+        Board board = Board.builder()
+                .scrapCount(1)
+                .build();
+
+        //when
+        board.decreaseScrapCount();
+
+        //then
+        assertThat(board.getScrapCount()).isEqualTo(0);
+    }
 }

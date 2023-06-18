@@ -161,6 +161,26 @@ class BoardServiceTest {
         assertThat(findBoard).isPresent();
         assertThat(findBoard.get().getScrapCount()).isEqualTo(1);
     }
+    
+    @Test
+    @DisplayName("게시글 스크랩 취소")
+    void cancelScrap() {
+        //given
+        Board board = insertBoard();
+        BoardScrap boardScrap = BoardScrap.createBoardScrap(board.getMember(), board);
+        BoardScrap savedBoardScrap = boardScrapRepository.save(boardScrap);
+
+        //when
+        Long boardScrapId = boardService.cancelScrap(savedBoardScrap.getMember().getLoginId(), savedBoardScrap.getBoard().getId());
+
+        //then
+        Optional<BoardScrap> findBoardScrap = boardScrapRepository.findById(boardScrapId);
+        assertThat(findBoardScrap).isEmpty();
+
+        Optional<Board> findBoard = boardRepository.findById(board.getId());
+        assertThat(findBoard).isPresent();
+        assertThat(findBoard.get().getScrapCount()).isEqualTo(0);
+    }
 
     private Member insertMember() {
         Member member = Member.builder()
