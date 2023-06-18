@@ -96,4 +96,8 @@ public class Board extends TimeBaseEntity {
         this.content = content;
         this.category = BoardCategory.builder().id(categoryId).build();
     }
+
+    public void remove() {
+
+    }
 }
