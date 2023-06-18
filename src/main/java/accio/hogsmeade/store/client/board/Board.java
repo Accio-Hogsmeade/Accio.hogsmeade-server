@@ -103,6 +103,6 @@ public class Board extends TimeBaseEntity {
     }
 
     public void increaseVoteCount() {
-
+        this.voteCount += 1;
     }
 }
