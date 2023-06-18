@@ -33,4 +33,14 @@ public class BoardScrap extends TimeBaseEntity {
         this.member = member;
         this.board = board;
     }
+
+    //== 연관관계 편의 메서드 ==//
+    public static BoardScrap createBoardScrap(Member member, Board board) {
+        BoardScrap boardScrap = BoardScrap.builder()
+                .member(member)
+                .board(board)
+                .build();
+        board.increaseScrapCount();
+        return boardScrap;
+    }
 }
