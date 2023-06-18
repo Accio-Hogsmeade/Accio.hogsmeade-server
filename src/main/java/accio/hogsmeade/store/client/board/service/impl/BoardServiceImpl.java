@@ -67,6 +67,11 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Long cancelVote(String loginId, Long boardId) {
-        return null;
+        BoardVote boardVote = boardVoteRepository.findByLoginId(loginId, boardId)
+                .orElseThrow(NoSuchElementException::new);
+
+        boardVote.getBoard().decreaseVoteCount();
+        boardVoteRepository.deleteById(boardVote.getId());
+        return boardVote.getId();
     }
 }
