@@ -41,6 +41,10 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Long removeBoard(Long boardId) {
-        return null;
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(NoSuchElementException::new);
+
+        board.remove();
+        return board.getId();
     }
 }
