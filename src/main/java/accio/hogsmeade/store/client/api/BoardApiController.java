@@ -60,4 +60,13 @@ public class BoardApiController {
         Long editedBoardId = boardService.editBoard(boardId, dto);
         log.debug("editBoard={}", editedBoardId);
     }
+
+    @ApiOperation(value = "게시글 삭제")
+    @DeleteMapping("/{boardId}")
+    public void removeBoard(@PathVariable Long boardId) {
+        log.debug("boardId={}", boardId);
+
+        Long removedBoardId = boardService.removeBoard(boardId);
+        log.debug("removeBoard={}", removedBoardId);
+    }
 }
