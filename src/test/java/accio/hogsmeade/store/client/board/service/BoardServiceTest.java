@@ -175,7 +175,7 @@ class BoardServiceTest {
 
         //then
         Optional<BoardScrap> findBoardScrap = boardScrapRepository.findById(boardScrapId);
-        assertThat(findBoardScrap).isPresent();
+        assertThat(findBoardScrap).isEmpty();
 
         Optional<Board> findBoard = boardRepository.findById(board.getId());
         assertThat(findBoard).isPresent();
