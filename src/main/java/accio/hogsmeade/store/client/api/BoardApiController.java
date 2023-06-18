@@ -1,5 +1,6 @@
 package accio.hogsmeade.store.client.api;
 
+import accio.hogsmeade.store.client.api.request.board.AddBoardReportRequest;
 import accio.hogsmeade.store.client.api.request.board.AddBoardRequest;
 import accio.hogsmeade.store.client.api.request.board.EditBoardRequest;
 import accio.hogsmeade.store.client.board.service.BoardService;
@@ -112,5 +113,16 @@ public class BoardApiController {
 
         Long boardScrapId = boardService.cancelScrap(loginId, boardId);
         log.debug("cancelScrap={}", boardScrapId);
+    }
+
+    @ApiOperation(value = "게시글 신고")
+    @PostMapping("/{boardId}/report")
+    public void report(@PathVariable Long boardId, @Valid @RequestBody AddBoardReportRequest request) {
+        log.debug("boardId={}", boardId);
+        String loginId = SecurityUtil.getCurrentLoginId();
+        log.debug("loginId={}", loginId);
+
+        Long boardReportId = boardService.addReport(loginId, boardId, request.getReason());
+        log.debug("report={}", boardReportId);
     }
 }
