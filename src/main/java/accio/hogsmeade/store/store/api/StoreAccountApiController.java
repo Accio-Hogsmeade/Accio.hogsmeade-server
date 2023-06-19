@@ -1,17 +1,17 @@
 package accio.hogsmeade.store.store.api;
 
+import accio.hogsmeade.store.jwt.TokenInfo;
+import accio.hogsmeade.store.store.api.request.store.LoginStoreRequest;
 import accio.hogsmeade.store.store.api.request.store.SignupStoreRequest;
 import accio.hogsmeade.store.store.api.request.store.WithdrawalStoreRequest;
+import accio.hogsmeade.store.store.store.service.StoreAccountService;
 import accio.hogsmeade.store.store.store.service.StoreService;
 import accio.hogsmeade.store.store.store.service.dto.SignupStoreDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -22,6 +22,7 @@ import javax.validation.Valid;
 public class StoreAccountApiController {
 
     private final StoreService storeService;
+    private final StoreAccountService storeAccountService;
 
     @ApiOperation(value = "상점 가입")
     @PostMapping("/store-signup")
@@ -43,13 +44,22 @@ public class StoreAccountApiController {
     }
 
     @ApiOperation(value = "상점 탈퇴")
-    // TODO: 2023-06-18 url 생각해보기 /store/{id}
-    @DeleteMapping("/withdrawal")
-    public Long withdrawal(@Valid @RequestBody WithdrawalStoreRequest request) {
+    @DeleteMapping("/store/{id}")
+    public Long withdrawal(@Valid @RequestBody WithdrawalStoreRequest request, @PathVariable String id) {
         log.debug("WithdrawalMemberRequest={}", request);
         Long storeId = storeService.withdrawal(request.getLoginId(), request.getLoginPw());
 
         log.info("withdrawal store={}", storeId);
         return storeId;
+    }
+
+    @ApiOperation(value = "상점 로그인")
+    @PostMapping("/store-login")
+    public TokenInfo login(@Valid @RequestBody LoginStoreRequest request) {
+        log.debug("LoginStoreRequest={}", request);
+        TokenInfo tokenInfo = storeAccountService.login(request.getLoginId(), request.getLoginPw());
+
+        log.debug("tokenInfo={}", tokenInfo);
+        return tokenInfo;
     }
 }
