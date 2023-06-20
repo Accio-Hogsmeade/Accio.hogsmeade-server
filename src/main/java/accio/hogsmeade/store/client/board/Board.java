@@ -123,6 +123,6 @@ public class Board extends TimeBaseEntity {
     }
 
     public void decreaseCommentCount() {
-
+        this.commentCount -= 1;
     }
 }
