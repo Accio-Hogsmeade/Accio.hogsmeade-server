@@ -120,4 +120,19 @@ class BoardTest {
         //then
         assertThat(board.getCommentCount()).isEqualTo(1);
     }
+
+    @Test
+    @DisplayName("댓글수 감소")
+    void decreaseCommentCount() {
+        //given
+        Board board = Board.builder()
+                .commentCount(1)
+                .build();
+
+        //when
+        board.decreaseCommentCount();
+
+        //then
+        assertThat(board.getCommentCount()).isEqualTo(0);
+    }
 }

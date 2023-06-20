@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 import static accio.hogsmeade.store.common.Active.ACTIVE;
+import static accio.hogsmeade.store.common.Active.DEACTIVE;
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
@@ -50,15 +51,24 @@ public class BoardComment extends TimeBaseEntity {
     }
 
     //== 연관관계 편의 메서드 ==//
-    public static BoardComment create(Member member, Board board, Long commentId,String content) {
+    public static BoardComment create(Member member, Board board, Long commentId, String content) {
+        BoardComment parent = null;
+        if (commentId != null) {
+            parent = BoardComment.builder().id(commentId).build();
+        }
         BoardComment boardComment = BoardComment.builder()
                 .content(content)
                 .active(ACTIVE)
                 .member(member)
                 .board(board)
-                .parent(BoardComment.builder().id(commentId).build())
+                .parent(parent)
                 .build();
         board.increaseCommentCount();
         return boardComment;
+    }
+
+    //== 비즈니스 로직 ==//
+    public void remove() {
+        this.active = DEACTIVE;
     }
 }

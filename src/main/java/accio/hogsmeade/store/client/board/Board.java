@@ -121,4 +121,8 @@ public class Board extends TimeBaseEntity {
     public void increaseCommentCount() {
         this.commentCount += 1;
     }
+
+    public void decreaseCommentCount() {
+        this.commentCount -= 1;
+    }
 }
