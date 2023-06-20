@@ -117,4 +117,8 @@ public class Board extends TimeBaseEntity {
     public void decreaseScrapCount() {
         this.scrapCount -= 1;
     }
+
+    public void increaseCommentCount() {
+
+    }
 }
