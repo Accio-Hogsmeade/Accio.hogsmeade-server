@@ -122,6 +122,10 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Long removeComment(Long commentId) {
-        return null;
+        BoardComment boardComment = boardCommentRepository.findByIdWithBoard(commentId)
+                .orElseThrow(NoSuchElementException::new);
+        boardComment.remove();
+        boardComment.getBoard().decreaseCommentCount();
+        return boardComment.getId();
     }
 }
