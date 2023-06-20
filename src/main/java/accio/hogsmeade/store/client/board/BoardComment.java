@@ -61,4 +61,9 @@ public class BoardComment extends TimeBaseEntity {
         board.increaseCommentCount();
         return boardComment;
     }
+
+    //== 비즈니스 로직 ==//
+    public void remove() {
+
+    }
 }
