@@ -207,6 +207,31 @@ class BoardServiceTest {
         //then
         Optional<BoardComment> findBoardComment = boardCommentRepository.findById(boardCommentId);
         assertThat(findBoardComment).isPresent();
+        assertThat(findBoardComment.get().getActive()).isEqualTo(DEACTIVE);
+
+        Optional<Board> findBoard = boardRepository.findById(board.getId());
+        assertThat(findBoard).isPresent();
+        assertThat(findBoard.get().getCommentCount()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("게시글 댓글 삭제")
+    void removeComment() {
+        //given
+        Board board = insertBoard();
+        BoardComment boardComment = BoardComment.create(board.getMember(), board, null, "board comment");
+        BoardComment savedBoardComment = boardCommentRepository.save(boardComment);
+
+        //when
+        Long boardCommentId = boardService.removeComment(savedBoardComment.getId());
+
+        //then
+        Optional<BoardComment> findBoardComment = boardCommentRepository.findById(boardCommentId);
+        assertThat(findBoardComment).isPresent();
+
+        Optional<Board> findBoard = boardRepository.findById(board.getId());
+        assertThat(findBoard).isPresent();
+        assertThat(findBoard.get().getCommentCount()).isEqualTo(0);
     }
 
     private Member insertMember() {
