@@ -1,13 +1,7 @@
 package accio.hogsmeade.store.client.board.service.impl;
 
-import accio.hogsmeade.store.client.board.Board;
-import accio.hogsmeade.store.client.board.BoardReport;
-import accio.hogsmeade.store.client.board.BoardScrap;
-import accio.hogsmeade.store.client.board.BoardVote;
-import accio.hogsmeade.store.client.board.repository.BoardReportRepository;
-import accio.hogsmeade.store.client.board.repository.BoardRepository;
-import accio.hogsmeade.store.client.board.repository.BoardScrapRepository;
-import accio.hogsmeade.store.client.board.repository.BoardVoteRepository;
+import accio.hogsmeade.store.client.board.*;
+import accio.hogsmeade.store.client.board.repository.*;
 import accio.hogsmeade.store.client.board.service.BoardService;
 import accio.hogsmeade.store.client.board.service.dto.AddBoardDto;
 import accio.hogsmeade.store.client.board.service.dto.EditBoardDto;
@@ -26,6 +20,7 @@ public class BoardServiceImpl implements BoardService {
     private final BoardVoteRepository boardVoteRepository;
     private final BoardScrapRepository boardScrapRepository;
     private final BoardReportRepository boardReportRepository;
+    private final BoardCommentRepository boardCommentRepository;
     private final MemberRepository memberRepository;
 
     @Override
@@ -111,5 +106,17 @@ public class BoardServiceImpl implements BoardService {
         BoardReport boardReport = BoardReport.create(reason, member.getId(), boardId);
         BoardReport savedBoardReport = boardReportRepository.save(boardReport);
         return savedBoardReport.getId();
+    }
+
+    @Override
+    public Long addComment(String loginId, Long boardId, Long commentId, String content) {
+        Member member = memberRepository.findByLoginId(loginId)
+                .orElseThrow(NoSuchElementException::new);
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(NoSuchElementException::new);
+
+        BoardComment boardComment = BoardComment.create(member, board, commentId, content);
+        BoardComment savedBoardComment = boardCommentRepository.save(boardComment);
+        return savedBoardComment.getId();
     }
 }
