@@ -41,6 +41,8 @@ class BoardServiceTest {
     private BoardScrapRepository boardScrapRepository;
     @Autowired
     private BoardReportRepository boardReportRepository;
+    @Autowired
+    private BoardCommentRepository boardCommentRepository;
 
     @Test
     @DisplayName("게시글 등록")
@@ -190,6 +192,22 @@ class BoardServiceTest {
         //then
         Optional<BoardReport> findBoardReport = boardReportRepository.findById(boardReportId);
         assertThat(findBoardReport).isPresent();
+    }
+
+    @Test
+    @DisplayName("게시글 댓글 등록")
+    void addComment() {
+        //given
+        Member member = insertMember();
+        Board board = insertBoard();
+        String content = "board comment";
+
+        //when
+        Long boardCommentId = boardService.addComment(member.getLoginId(), board.getId(), null, content);
+
+        //then
+        Optional<BoardComment> findBoardComment = boardCommentRepository.findById(boardCommentId);
+        assertThat(findBoardComment).isPresent();
     }
 
     private Member insertMember() {
