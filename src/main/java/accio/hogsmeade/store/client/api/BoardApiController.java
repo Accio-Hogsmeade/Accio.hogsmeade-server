@@ -1,5 +1,6 @@
 package accio.hogsmeade.store.client.api;
 
+import accio.hogsmeade.store.client.api.request.board.AddBoardCommentRequest;
 import accio.hogsmeade.store.client.api.request.board.AddBoardReportRequest;
 import accio.hogsmeade.store.client.api.request.board.AddBoardRequest;
 import accio.hogsmeade.store.client.api.request.board.EditBoardRequest;
@@ -124,5 +125,16 @@ public class BoardApiController {
 
         Long boardReportId = boardService.addReport(loginId, boardId, request.getReason());
         log.debug("report={}", boardReportId);
+    }
+
+    @ApiOperation(value = "게시글 댓글 등록")
+    @PostMapping("/{boardId}/comment")
+    public void addComment(@PathVariable Long boardId, @Valid @RequestBody AddBoardCommentRequest request) {
+        log.debug("boardId={}", boardId);
+        String loginId = SecurityUtil.getCurrentLoginId();
+        log.debug("loginId={}", loginId);
+
+        Long boardCommentId = boardService.addComment(loginId, boardId, request.getCommentId(), request.getContent());
+        log.debug("addComment={}", boardCommentId);
     }
 }
