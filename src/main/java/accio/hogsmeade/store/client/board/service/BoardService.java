@@ -24,4 +24,6 @@ public interface BoardService {
     Long addReport(String loginId, Long boardId, String reason);
 
     Long addComment(String loginId, Long boardId, Long commentId, String content);
+
+    Long removeComment(Long commentId);
 }

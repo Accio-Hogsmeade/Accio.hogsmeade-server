@@ -119,4 +119,9 @@ public class BoardServiceImpl implements BoardService {
         BoardComment savedBoardComment = boardCommentRepository.save(boardComment);
         return savedBoardComment.getId();
     }
+
+    @Override
+    public Long removeComment(Long commentId) {
+        return null;
+    }
 }
