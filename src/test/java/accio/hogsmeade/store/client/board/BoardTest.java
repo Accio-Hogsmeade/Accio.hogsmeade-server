@@ -105,4 +105,19 @@ class BoardTest {
         //then
         assertThat(board.getScrapCount()).isEqualTo(0);
     }
+
+    @Test
+    @DisplayName("댓글수 증가")
+    void increaseCommentCount() {
+        //given
+        Board board = Board.builder()
+                .commentCount(0)
+                .build();
+
+        //when
+        board.increaseCommentCount();
+
+        //then
+        assertThat(board.getCommentCount()).isEqualTo(1);
+    }
 }
