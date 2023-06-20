@@ -198,12 +198,11 @@ class BoardServiceTest {
     @DisplayName("게시글 댓글 등록")
     void addComment() {
         //given
-        Member member = insertMember();
         Board board = insertBoard();
         String content = "board comment";
 
         //when
-        Long boardCommentId = boardService.addComment(member.getLoginId(), board.getId(), null, content);
+        Long boardCommentId = boardService.addComment(board.getMember().getLoginId(), board.getId(), null, content);
 
         //then
         Optional<BoardComment> findBoardComment = boardCommentRepository.findById(boardCommentId);
