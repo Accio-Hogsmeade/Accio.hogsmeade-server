@@ -112,4 +112,9 @@ public class BoardServiceImpl implements BoardService {
         BoardReport savedBoardReport = boardReportRepository.save(boardReport);
         return savedBoardReport.getId();
     }
+
+    @Override
+    public Long addComment(String loginId, Long boardId, Long commentId, String content) {
+        return null;
+    }
 }

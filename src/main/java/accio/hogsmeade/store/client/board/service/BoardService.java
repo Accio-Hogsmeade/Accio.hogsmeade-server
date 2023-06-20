@@ -22,4 +22,6 @@ public interface BoardService {
     Long cancelScrap(String loginId, Long boardId);
 
     Long addReport(String loginId, Long boardId, String reason);
+
+    Long addComment(String loginId, Long boardId, Long commentId, String content);
 }
