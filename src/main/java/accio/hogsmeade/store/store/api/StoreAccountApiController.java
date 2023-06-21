@@ -15,17 +15,18 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@RestController
+@RestController()
 @Slf4j
 @RequiredArgsConstructor
 @Api(tags = {"상점계정"})
+@RequestMapping("/api/store")
 public class StoreAccountApiController {
 
     private final StoreService storeService;
     private final StoreAccountService storeAccountService;
 
     @ApiOperation(value = "상점 가입")
-    @PostMapping("/store-signup")
+    @PostMapping("/signup")
     public Long signup(@RequestBody SignupStoreRequest request) {
         log.debug("SignupStoreRequest={}", request);
         SignupStoreDto dto = SignupStoreDto.builder()
@@ -44,7 +45,7 @@ public class StoreAccountApiController {
     }
 
     @ApiOperation(value = "상점 탈퇴")
-    @DeleteMapping("/store/{id}")
+    @DeleteMapping("/withdrawal")
     public Long withdrawal(@Valid @RequestBody WithdrawalStoreRequest request, @PathVariable String id) {
         log.debug("WithdrawalMemberRequest={}", request);
         Long storeId = storeService.withdrawal(request.getLoginId(), request.getLoginPw());
@@ -54,7 +55,7 @@ public class StoreAccountApiController {
     }
 
     @ApiOperation(value = "상점 로그인")
-    @PostMapping("/store-login")
+    @PostMapping("/login")
     public TokenInfo login(@Valid @RequestBody LoginStoreRequest request) {
         log.debug("LoginStoreRequest={}", request);
         TokenInfo tokenInfo = storeAccountService.login(request.getLoginId(), request.getLoginPw());
