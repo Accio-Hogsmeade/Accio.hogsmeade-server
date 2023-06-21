@@ -44,6 +44,7 @@ public class StoreServiceImpl implements StoreService {
         Store findStore = storeRepository.findByLoginId(loginId)
                 .orElseThrow(NoSuchElementException::new);
 
+        // TODO: 2023-06-19 상점 탈퇴시 이메일 인증 기능 추가 
         findStore.withdrawal(loginPw);
 
         return findStore.getId();
