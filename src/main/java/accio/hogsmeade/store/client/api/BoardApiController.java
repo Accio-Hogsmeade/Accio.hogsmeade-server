@@ -20,6 +20,8 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
+import static accio.hogsmeade.store.common.FilePath.BOARD;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -37,7 +39,7 @@ public class BoardApiController {
         String loginId = SecurityUtil.getCurrentLoginId();
         log.debug("loginId={}", loginId);
 
-        List<UploadFile> files = fileStore.storeFiles(request.getFiles());
+        List<UploadFile> files = fileStore.storeFiles(request.getFiles(), BOARD);
 
         AddBoardDto dto = AddBoardDto.builder()
                 .boardCategoryId(request.getCategoryId())
