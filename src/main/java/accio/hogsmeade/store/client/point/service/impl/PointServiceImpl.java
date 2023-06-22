@@ -28,4 +28,9 @@ public class PointServiceImpl implements PointService {
 
         return point.getId();
     }
+
+    @Override
+    public Long usePoint(String loginId, int amount) {
+        return null;
+    }
 }
