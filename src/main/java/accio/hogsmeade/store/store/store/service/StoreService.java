@@ -9,4 +9,6 @@ public interface StoreService {
     Long signup(SignupStoreDto dto);
 
     Long withdrawal(String loginId, String loginPw);
+
+    Long editLoginPw(String loginId, String nowLoginPw, String newLoginPw);
 }
