@@ -142,6 +142,22 @@ class StoreServiceTest {
         assertThat(findStore.get().getActive()).isEqualTo(DEACTIVE);
     }
 
+    @Test
+    @DisplayName("비밀번호 변경")
+    void editLoginPw() {
+        //given
+        Store store = insertStore();
+        String newLoginPw = store.getLoginPw() + "@";
+
+        //when
+        Long storeId = storeService.editLoginPw(store.getLoginId(), store.getLoginPw(),newLoginPw);
+
+        //then
+        Optional<Store> findStore = storeRepository.findById(storeId);
+        assertThat(findStore).isPresent();
+        assertThat(findStore.get().getLoginPw()).isEqualTo(newLoginPw);
+    }
+
     private Store insertStore() {
         Store store = Store.builder()
                 .loginId("storeid")
