@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @Slf4j
 @RequiredArgsConstructor
 @Api(tags = {"상점계정"})
-@RequestMapping("/api/store")
+@RequestMapping("/api/stores")
 public class StoreAccountApiController {
 
     private final StoreService storeService;
