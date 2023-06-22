@@ -1,10 +1,9 @@
-package accio.hogsmeade.store.client.point.service.impl;
+package accio.hogsmeade.store.client.point.service;
 
 import accio.hogsmeade.store.client.member.Member;
 import accio.hogsmeade.store.client.member.repository.MemberRepository;
 import accio.hogsmeade.store.client.point.Point;
 import accio.hogsmeade.store.client.point.repository.PointRepository;
-import accio.hogsmeade.store.client.point.service.PointService;
 import accio.hogsmeade.store.common.Address;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
-class PointServiceImplTest {
+class PointServiceTest {
 
     @Autowired
     private PointService pointService;
@@ -71,6 +71,7 @@ class PointServiceImplTest {
         Point point = Point.builder()
                 .savedPoint(0)
                 .member(member)
+                .histories(new ArrayList<>())
                 .build();
         return pointRepository.save(point);
     }
