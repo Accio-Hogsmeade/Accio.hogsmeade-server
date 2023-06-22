@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -25,10 +28,25 @@ public class Point extends TimeBaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @OneToMany(mappedBy = "point", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PointHistory> histories = new ArrayList<>();
+
     @Builder
-    public Point(Long id, int savedPoint, Member member) {
+    public Point(Long id, int savedPoint, Member member, List<PointHistory> histories) {
         this.id = id;
         this.savedPoint = savedPoint;
         this.member = member;
+        this.histories = histories;
+    }
+
+    //== 연관관계 편의 메서드 ==//
+    public void addPointHistory(PointHistoryType type ,int amount) {
+        PointHistory pointHistory = PointHistory.builder()
+                .type(type)
+                .amount(amount)
+                .point(this)
+                .build();
+        this.histories.add(pointHistory);
+        this.savedPoint += amount;
     }
 }
