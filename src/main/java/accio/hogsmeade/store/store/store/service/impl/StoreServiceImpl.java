@@ -52,6 +52,9 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public Long editLoginPw(String loginId, String nowLoginPw, String newLoginPw) {
-        return null;
+        Store findStore = storeRepository.findByLoginId(loginId).orElseThrow(NoSuchElementException::new);
+
+        findStore.editLoginPw(nowLoginPw, newLoginPw);
+        return findStore.getId();
     }
 }
