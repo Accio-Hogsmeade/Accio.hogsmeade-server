@@ -5,5 +5,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface PointService {
 
-    Long addPoint(String loginId, int amount);
+    Long addPoint(String loginId, int totalPrice);
 }
