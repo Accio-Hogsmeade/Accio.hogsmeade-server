@@ -16,28 +16,28 @@ public class FileStore {
     @Value("${file.dir}")
     public String fileDir;
 
-    public String getFullPath(String filename) {
-        return fileDir + filename;
+    public String getFullPath(String filename, FilePath path) {
+        return fileDir + path.getPath() + filename;
     }
 
-    public List<UploadFile> storeFiles(List<MultipartFile> multipartFiles) throws IOException {
+    public List<UploadFile> storeFiles(List<MultipartFile> multipartFiles, FilePath path) throws IOException {
         List<UploadFile> storeFileResult = new ArrayList<>();
         for (MultipartFile multipartFile : multipartFiles) {
             if (!multipartFile.isEmpty()) {
-                storeFileResult.add(storeFile(multipartFile));
+                storeFileResult.add(storeFile(multipartFile, path));
             }
         }
         return storeFileResult;
     }
 
-    public UploadFile storeFile(MultipartFile multipartFile) throws IOException {
+    public UploadFile storeFile(MultipartFile multipartFile, FilePath path) throws IOException {
         if (multipartFile.isEmpty()) {
             return null;
         }
 
         String originalFilename = multipartFile.getOriginalFilename();
         String storeFileName = createStoreFileName(originalFilename);
-        multipartFile.transferTo(new File(getFullPath(storeFileName)));
+        multipartFile.transferTo(new File(getFullPath(storeFileName, path)));
         return new UploadFile(originalFilename, storeFileName);
     }
 
