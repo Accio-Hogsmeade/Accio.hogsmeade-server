@@ -3,6 +3,7 @@ package accio.hogsmeade.store.store.store;
 import accio.hogsmeade.store.common.Active;
 import accio.hogsmeade.store.common.TimeBaseEntity;
 import accio.hogsmeade.store.common.exception.AuthorityException;
+import accio.hogsmeade.store.common.exception.EditException;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
@@ -80,6 +81,9 @@ public class Store extends TimeBaseEntity implements UserDetails {
                 .build();
     }
 
+    /*
+    비지니스 로직
+     */
     public void withdrawal(String loginPw) {
         if (!this.loginPw.equals(loginPw)) {
             throw new AuthorityException();
@@ -87,6 +91,16 @@ public class Store extends TimeBaseEntity implements UserDetails {
         this.active = DEACTIVE;
     }
 
+    public void editLoginPw(String nowLoginPw, String newLoginPw) {
+        if (!this.loginPw.equals(nowLoginPw)) {
+            throw new EditException();
+        }
+        this.loginPw = newLoginPw;
+    }
+
+    /*
+    시큐리티
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
