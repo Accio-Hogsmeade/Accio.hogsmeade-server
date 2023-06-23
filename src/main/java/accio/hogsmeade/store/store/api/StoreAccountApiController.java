@@ -1,5 +1,8 @@
 package accio.hogsmeade.store.store.api;
 
+import accio.hogsmeade.store.client.api.request.member.EditLoginPwRequest;
+import accio.hogsmeade.store.client.member.service.dto.EditLoginPwDto;
+import accio.hogsmeade.store.jwt.SecurityUtil;
 import accio.hogsmeade.store.jwt.TokenInfo;
 import accio.hogsmeade.store.store.api.request.store.LoginStoreRequest;
 import accio.hogsmeade.store.store.api.request.store.SignupStoreRequest;
@@ -62,5 +65,17 @@ public class StoreAccountApiController {
 
         log.debug("tokenInfo={}", tokenInfo);
         return tokenInfo;
+    }
+
+    @ApiOperation(value = "비밀번호 변경")
+    @PutMapping("/loginPw")
+    public void editLoginPw(@Valid @RequestBody EditLoginPwRequest request) {
+        log.debug("EditLoginPwRequest={}", request);
+
+        String loginId = SecurityUtil.getCurrentLoginId();
+        log.debug("loginId={}", loginId);
+
+        Long memberId = storeService.editLoginPw(loginId, request.getNowLoginPw(), request.getNewLoginPw());
+        log.debug("editLoginPw={}", memberId);
     }
 }
