@@ -11,6 +11,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static accio.hogsmeade.store.client.point.PointHistoryType.USE;
 import static javax.persistence.FetchType.LAZY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -40,7 +41,7 @@ public class Point extends TimeBaseEntity {
     }
 
     //== 연관관계 편의 메서드 ==//
-    public void addPointHistory(PointHistoryType type ,int amount) {
+    public void save(PointHistoryType type , int amount) {
         PointHistory pointHistory = PointHistory.builder()
                 .type(type)
                 .amount(amount)
@@ -48,5 +49,19 @@ public class Point extends TimeBaseEntity {
                 .build();
         this.histories.add(pointHistory);
         this.savedPoint += amount;
+    }
+
+    public void use(int amount) {
+        int result = this.savedPoint - amount;
+        if (result < 0) {
+            throw new IllegalStateException();
+        }
+        PointHistory pointHistory = PointHistory.builder()
+                .type(USE)
+                .amount(amount)
+                .point(this)
+                .build();
+        this.histories.add(pointHistory);
+        this.savedPoint = result;
     }
 }
