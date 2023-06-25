@@ -222,8 +222,8 @@ class StoreServiceTest {
                 .loginPw("Dstorepw123!")
                 .storeName("Dhoneyduke")
                 .storeInfo("Dbutter beer")
-                .email("honney@gmail.com")
-                .tel("010-1234-1234")
+                .email("honney1@gmail.com")
+                .tel("010-1234-2222")
                 .shopkeeper("Dron")
                 .active(ACTIVE)
                 .build();;
