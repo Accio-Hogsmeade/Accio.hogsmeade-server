@@ -11,4 +11,8 @@ public interface StoreService {
     Long withdrawal(String loginId, String loginPw);
 
     Long editLoginPw(String loginId, String nowLoginPw, String newLoginPw);
+
+    Long editTel(String loginId, String newTel);
+
+    Long editEmail(String loginId, String newEmail);
 }

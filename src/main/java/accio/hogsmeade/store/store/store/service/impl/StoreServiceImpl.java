@@ -1,5 +1,6 @@
 package accio.hogsmeade.store.store.store.service.impl;
 
+import accio.hogsmeade.store.common.exception.EditException;
 import accio.hogsmeade.store.store.store.Store;
 import accio.hogsmeade.store.store.store.repository.StoreRepository;
 import accio.hogsmeade.store.store.store.service.StoreService;
@@ -60,11 +61,33 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public Long editTel(String loginId, String newTel) {
-        return null;
+        Optional<Store> findStore = storeRepository.findByTel(newTel);
+        if (findStore.isPresent()) {
+            if (findStore.get().getLoginId().equals(loginId)) {
+                throw new EditException();
+            }
+            throw new DuplicateException();
+        }
+
+        Store store = storeRepository.findByLoginId(loginId)
+                .orElseThrow(NoSuchElementException::new);
+        store.editTel(newTel);
+        return store.getId();
     }
 
     @Override
     public Long editEmail(String loginId, String newEmail) {
-        return null;
+        Optional<Store> findStore = storeRepository.findByEmail(newEmail);
+        if (findStore.isPresent()) {
+            if (findStore.get().getLoginId().equals(loginId)) {
+                throw new EditException();
+            }
+            throw new DuplicateException();
+        }
+
+        Store store = storeRepository.findByLoginId(loginId)
+                .orElseThrow(NoSuchElementException::new);
+        store.editEmail(newEmail);
+        return store.getId();
     }
 }
