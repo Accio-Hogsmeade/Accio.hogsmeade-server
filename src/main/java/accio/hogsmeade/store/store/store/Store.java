@@ -98,6 +98,14 @@ public class Store extends TimeBaseEntity implements UserDetails {
         this.loginPw = newLoginPw;
     }
 
+    public void editTel(String newTel) {
+        this.tel = newTel;
+    }
+
+    public void editEmail(String newEmail) {
+        this.email = newEmail;
+    }
+
     /*
     시큐리티
      */
