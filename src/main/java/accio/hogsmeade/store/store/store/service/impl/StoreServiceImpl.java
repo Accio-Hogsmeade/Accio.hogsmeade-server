@@ -57,4 +57,14 @@ public class StoreServiceImpl implements StoreService {
         findStore.editLoginPw(nowLoginPw, newLoginPw);
         return findStore.getId();
     }
+
+    @Override
+    public Long editTel(String loginId, String newTel) {
+        return null;
+    }
+
+    @Override
+    public Long editEmail(String loginId, String newEmail) {
+        return null;
+    }
 }
