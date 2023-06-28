@@ -36,7 +36,7 @@ class PointServiceTest {
     void addPoint() {
         //given
         Member member = insertMember();
-        Point point = insertPoint(member);
+        Point point = insertPoint(member, 0);
 
         //when
         Long pointId = pointService.addPoint(member.getLoginId(), 10000);
@@ -45,6 +45,22 @@ class PointServiceTest {
         Optional<Point> findPoint = pointRepository.findById(pointId);
         assertThat(findPoint).isPresent();
         assertThat(findPoint.get().getSavedPoint()).isEqualTo(100);
+    }
+
+    @Test
+    @DisplayName("포인트 사용")
+    void usePoint() {
+        //given
+        Member member = insertMember();
+        Point point = insertPoint(member, 10000);
+
+        //when
+        Long pointId = pointService.usePoint(member.getLoginId(), 5000);
+
+        //then
+        Optional<Point> findPoint = pointRepository.findById(pointId);
+        assertThat(findPoint).isPresent();
+        assertThat(findPoint.get().getSavedPoint()).isEqualTo(5000);
     }
 
     private Member insertMember() {
@@ -67,9 +83,9 @@ class PointServiceTest {
         return memberRepository.save(member);
     }
 
-    private Point insertPoint(Member member) {
+    private Point insertPoint(Member member, int savedPoint) {
         Point point = Point.builder()
-                .savedPoint(0)
+                .savedPoint(savedPoint)
                 .member(member)
                 .histories(new ArrayList<>())
                 .build();

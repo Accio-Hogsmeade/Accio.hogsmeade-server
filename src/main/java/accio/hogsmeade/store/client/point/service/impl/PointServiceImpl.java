@@ -24,8 +24,17 @@ public class PointServiceImpl implements PointService {
                 .orElseThrow(NoSuchElementException::new);
 
         int amount = pointPolicy.savePoint(totalPrice);
-        point.addPointHistory(SAVE, amount);
+        point.save(SAVE, amount);
 
+        return point.getId();
+    }
+
+    @Override
+    public Long usePoint(String loginId, int amount) {
+        Point point = pointRepository.findByLoginId(loginId)
+                .orElseThrow(NoSuchElementException::new);
+
+        point.use(amount);
         return point.getId();
     }
 }
