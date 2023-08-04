@@ -45,6 +45,7 @@ public class Item extends TimeBaseEntity {
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemImage> images = new ArrayList<>();
 
+    // TODO: 2023-08-04 엑티브 삭제하기
     @Builder
     public Item(Long id, String name, String info, int price, int quantity, Active active, Store store, List<ItemImage> images) {
         this.id = id;
@@ -70,7 +71,6 @@ public class Item extends TimeBaseEntity {
                 .store(store)
                 .images(new ArrayList<>())
                 .build();
-        // TODO: 2023-06-22 이거 질문하기 dto
         for (UploadFile file : files) {
             ItemImage image = ItemImage.builder()
                     .uploadFile(file)
@@ -85,23 +85,16 @@ public class Item extends TimeBaseEntity {
         this.images.add(image);
     }
 
-//    public static Item createItem(Store store, AddItemDto dto) {
-//        Item item = Item.builder()
-//                .name(dto.getName())
-//                .info(dto.getInfo())
-//                .price(dto.getPrice())
-//                .quantity(dto.getQuantity())
-//                .active(ACTIVE)
-//                .store(store)
-//                .images(new ArrayList<>())
-//                .build();
-//        for (UploadFile file : dto.getFiles()) {
-//            ItemImage image = ItemImage.builder()
-//                    .uploadFile(file)
-//                    .item(item)
-//                    .build();
-//            item.addItemImage(image);
-//        }
-//        return item;
-//    }
+    /*
+    변경 로직
+     */
+    public void updateQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void updateItem(String name, String info, int price) {
+        this.name = name;
+        this.info = info;
+        this.price = price;
+    }
 }
